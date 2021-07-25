@@ -71,9 +71,6 @@ public class Board : MonoBehaviour {
     /// <summary>
     /// Instantites and positions the tiles that make up the board, storing them in <see cref="Board.tiles"/>
     /// </summary>
-    /// <remarks>
-    /// Called at Start
-    /// </remarks>
     void ConstructMap()
     {
 
@@ -116,10 +113,5 @@ public class Board : MonoBehaviour {
     private Tile getTileAtPosition(int x, int y)
     {
         return tiles[x + y * boardSizeX];
-    }
-
-    // Start is called before the first frame update
-    void Start() {
-        ConstructMap();
     }
 }

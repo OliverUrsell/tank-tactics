@@ -21,6 +21,13 @@ public class PanCameraController : MonoBehaviour
     private float panSpeed = 5F;
 
     /// <summary>
+    /// Whether the user can move the camera by moving their mouse to the border of the screen
+    /// </summary>
+    [Tooltip("Whether the user can move the camera by moving their mouse to the border of the screen")]
+    [SerializeField]
+    private bool mouseBorderPan = true;
+
+    /// <summary>
     /// The distance from the screen border the mouse position has to be to make a pan start in that direction
     /// </summary>
     [Tooltip("The distance from the screen border the mouse position has to be to make a pan start in that direction")]
@@ -41,7 +48,10 @@ public class PanCameraController : MonoBehaviour
     [SerializeField]
     private float scrollSpeed = 2f;
 
-    private Vector3 startMousePosition;
+    /// <summary>
+    /// Records the mouse position from the last screen, which enables the click and drag camera behaviour
+    /// </summary>
+    private Vector3 previousMousePosition;
 
     // Update is called once per frame
     void Update()
@@ -60,22 +70,22 @@ public class PanCameraController : MonoBehaviour
 
         Vector3 cameraPosition = transform.position;
 
-        if (Input.GetKey("w") || Input.mousePosition.y > Screen.height - panStartBorderThickness)
+        if (Input.GetKey("w") || (Input.mousePosition.y > Screen.height - panStartBorderThickness && mouseBorderPan))
         {
             cameraPosition.y += panSpeed / camera.orthographicSize * Time.deltaTime;
         }
 
-        if (Input.GetKey("s") || Input.mousePosition.y <= panStartBorderThickness)
+        if (Input.GetKey("s") || (Input.mousePosition.y <= panStartBorderThickness && mouseBorderPan))
         {
             cameraPosition.y -= panSpeed / camera.orthographicSize * Time.deltaTime;
         }
 
-        if (Input.GetKey("a") || Input.mousePosition.x <= panStartBorderThickness)
+        if (Input.GetKey("a") || (Input.mousePosition.x <= panStartBorderThickness && mouseBorderPan))
         {
             cameraPosition.x -= panSpeed / camera.orthographicSize * Time.deltaTime;
         }
 
-        if (Input.GetKey("d") || Input.mousePosition.x > Screen.width - panStartBorderThickness)
+        if (Input.GetKey("d") || (Input.mousePosition.x > Screen.width - panStartBorderThickness && mouseBorderPan))
         {
             cameraPosition.x += panSpeed / camera.orthographicSize * Time.deltaTime;
         }
@@ -92,13 +102,13 @@ public class PanCameraController : MonoBehaviour
             boardBounds.startY - cameraCenterWorldPosition.y - panEdgeBorderThickness,
             boardBounds.endY - cameraCenterWorldPosition.y + panEdgeBorderThickness);
 
-        if (Input.GetMouseButton(0) && startMousePosition != null)
+        if (Input.GetMouseButton(0) && previousMousePosition != null)
         {
-            cameraPosition -= (camera.WorldToScreenPoint(Input.mousePosition) - startMousePosition) * Time.deltaTime * 0.01F * camera.orthographicSize;
+            cameraPosition -= (camera.WorldToScreenPoint(Input.mousePosition) - previousMousePosition) * Time.deltaTime * 0.01F * camera.orthographicSize;
         }
 
         transform.position = cameraPosition;
 
-        startMousePosition = camera.WorldToScreenPoint(Input.mousePosition);
+        previousMousePosition = camera.WorldToScreenPoint(Input.mousePosition);
     }
 }
