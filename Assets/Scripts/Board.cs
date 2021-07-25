@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Board : MonoBehaviour {
 
-    public GameObject tilePrefab;
+    [SerializeField]
+    private GameObject tilePrefab;
 
     /// <summary>
     /// Horizontal size of the board in number of tiles
@@ -36,6 +37,36 @@ public class Board : MonoBehaviour {
     /// </summary>
     private List<Tile> tiles = new List<Tile>();
 
+    public struct Bound
+    {
+        public float startX, startY, endX, endY;
+
+        public Bound(float startX, float startY, float endX, float endY)
+        {
+            this.startX = startX;
+            this.startY = startY;
+            this.endX = endX;
+            this.endY = endY;
+        }
+    }
+
+    /// <summary>
+    /// Get the bounds of the board in unity units
+    /// </summary>
+    /// <returns><see cref="Board.Bound"/> object which gives the start and end coordinates of the board in unity units</returns>
+    public Bound GetBoardBounds()
+    {
+        Vector2 tileScale = tilePrefab.GetComponent<Transform>().localScale;
+
+        float startX = -(boardSizeX / 2 * (tileScale.x + tileGap));
+        float startY = -(boardSizeY / 2 * (tileScale.y + tileGap));
+        
+        float endX = -startX;
+        float endY = -startY;
+
+        return new Bound(startX, startY, endX, endY);
+    }
+
 
     /// <summary>
     /// Instantites and positions the tiles that make up the board, storing them in <see cref="Board.tiles"/>
@@ -48,7 +79,6 @@ public class Board : MonoBehaviour {
 
         Vector2 tileScale = tilePrefab.GetComponent<Transform>().localScale;
 
-        
         for (
             float y = -(boardSizeY / 2 * (tileScale.y + tileGap));
             y < boardSizeY / 2 * tileScale.y;
@@ -91,8 +121,5 @@ public class Board : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         ConstructMap();
-        getTileAtPosition(0, 0).gameObject.SetActive(false);
-        getTileAtPosition(0, 1).gameObject.SetActive(false);
-        getTileAtPosition(1, 0).gameObject.SetActive(false);
     }
 }
