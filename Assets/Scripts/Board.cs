@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using MLAPI;
+using MLAPI.NetworkVariable;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Board : MonoBehaviour {
+public class Board : NetworkBehaviour {
 
     [SerializeField]
     private GameObject tilePrefab;
@@ -14,7 +17,7 @@ public class Board : MonoBehaviour {
     [Header("Board Size")]
     [MinAttribute(1)]
     [SerializeField]
-    private int boardSizeX = 10;
+    private NetworkVariable<int> boardSizeX = new NetworkVariable<int>(10);
 
     /// <summary>
     /// Vertical size of the board in number of tiles
@@ -22,7 +25,7 @@ public class Board : MonoBehaviour {
     [Tooltip("Vertical size of the board in number of tiles")]
     [MinAttribute(1)]
     [SerializeField]
-    private int boardSizeY = 10;
+    private NetworkVariable<int> boardSizeY = new NetworkVariable<int>(10);
 
     /// <summary>
     /// The gap between tiles in unity units
@@ -36,6 +39,60 @@ public class Board : MonoBehaviour {
     /// Stores the Tile objects that make up the board. [0] is the botom left, [x + y*boardSizeX] is one up from the bottom left 
     /// </summary>
     private List<Tile> tiles = new List<Tile>();
+
+    /// <summary>
+    /// Singleton of the board, ensures only one board instance can be created
+    /// </summary>
+    public static Board Singleton;
+
+    public void Start()
+    {
+        if (Singleton == null) Singleton = this;
+        else throw new System.Exception("Attempted to create more than one Board instance");
+    }
+
+    public (int, int) getBoardSize()
+    {
+        return (boardSizeX.Value, boardSizeY.Value);
+    }
+
+    public (String, String) getBoardSizeAsString()
+    {
+        return (boardSizeX.Value.ToString(), boardSizeX.Value.ToString());
+    }
+
+    public void addBoardSizeCallback(NetworkVariable<int>.OnValueChangedDelegate boardSizeXFunction, NetworkVariable<int>.OnValueChangedDelegate boardSizeYFunction) {
+        // NetworkVariable<int>.OnValueChangedDelegate
+        boardSizeX.OnValueChanged += boardSizeXFunction;
+        boardSizeY.OnValueChanged += boardSizeYFunction;
+    }
+
+    /// <summary>
+    /// Horizontal X axis or Vertical Y axis
+    /// </summary>
+    public enum Axis{X, Y}
+
+    /// <summary>
+    /// Change the board size by an amount, on a given axis
+    /// </summary>
+    /// <param name="xAxis">The axis to change, X for horizontal, Y for vertical</param>
+    /// <param name="amount">The amount to change the size by, can be negative or positive</param>
+    public void changeBoardSize(Axis axis, int amount)
+    {
+        switch (axis)
+        {
+            case Axis.X:
+                boardSizeX.Value += amount;
+                if (boardSizeX.Value < 1) boardSizeX.Value = 1;
+                break;
+            case Axis.Y:
+                boardSizeY.Value += amount;
+                if (boardSizeY.Value < 1) boardSizeY.Value = 1;
+                break;
+            default:
+                throw new System.ArgumentException("Unkown Axis");
+        }
+    }
 
     public struct Bound
     {
@@ -58,8 +115,8 @@ public class Board : MonoBehaviour {
     {
         Vector2 tileScale = tilePrefab.GetComponent<Transform>().localScale;
 
-        float startX = -(boardSizeX / 2 * (tileScale.x + tileGap));
-        float startY = -(boardSizeY / 2 * (tileScale.y + tileGap));
+        float startX = -(boardSizeX.Value / 2 * (tileScale.x + tileGap));
+        float startY = -(boardSizeY.Value / 2 * (tileScale.y + tileGap));
         
         float endX = -startX;
         float endY = -startY;
@@ -71,20 +128,20 @@ public class Board : MonoBehaviour {
     /// <summary>
     /// Instantites and positions the tiles that make up the board, storing them in <see cref="Board.tiles"/>
     /// </summary>
-    void ConstructMap()
+    public void ConstructMap()
     {
 
         Vector2 tileScale = tilePrefab.GetComponent<Transform>().localScale;
 
         for (
-            float y = -(boardSizeY / 2 * (tileScale.y + tileGap));
-            y < boardSizeY / 2 * tileScale.y;
+            float y = -(boardSizeY.Value / 2 * (tileScale.y + tileGap));
+            y < boardSizeY.Value / 2 * tileScale.y;
             y += tileScale.y + tileGap
         )
         {
             for (
-                float x = -(boardSizeX / 2 * (tileScale.x + tileGap));
-                x < boardSizeX / 2 * tileScale.x;
+                float x = -(boardSizeX.Value / 2 * (tileScale.x + tileGap));
+                x < boardSizeX.Value / 2 * tileScale.x;
                 x += tileScale.x + tileGap
             )
             {
@@ -112,6 +169,6 @@ public class Board : MonoBehaviour {
     /// <returns><see cref="Tile"/> representing the tile at <paramref name="x"/>, <paramref name="y"/> from the bottom left</returns>
     private Tile getTileAtPosition(int x, int y)
     {
-        return tiles[x + y * boardSizeX];
+        return tiles[x + y * boardSizeX.Value];
     }
 }

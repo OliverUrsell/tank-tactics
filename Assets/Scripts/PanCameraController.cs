@@ -48,6 +48,10 @@ public class PanCameraController : MonoBehaviour
     [SerializeField]
     private float scrollSpeed = 2f;
 
+    [Header("Mouse Drag settings")]
+    [SerializeField]
+    private float dragSpeed = 10F;
+
     /// <summary>
     /// Records the mouse position from the last screen, which enables the click and drag camera behaviour
     /// </summary>
@@ -104,11 +108,11 @@ public class PanCameraController : MonoBehaviour
 
         if (Input.GetMouseButton(0) && previousMousePosition != null)
         {
-            cameraPosition -= (camera.WorldToScreenPoint(Input.mousePosition) - previousMousePosition) * Time.deltaTime * 0.01F * camera.orthographicSize;
+            cameraPosition -= camera.ScreenToViewportPoint(Input.mousePosition - previousMousePosition) * dragSpeed;
         }
 
         transform.position = cameraPosition;
 
-        previousMousePosition = camera.WorldToScreenPoint(Input.mousePosition);
+        previousMousePosition = Input.mousePosition;
     }
 }

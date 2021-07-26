@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LobbyCanvas : MonoBehaviour
+public class LobbyCanvas : NetworkBehaviour
 {
     /// <summary>
     /// The prefab which is used to fill the content with names
@@ -21,12 +21,66 @@ public class LobbyCanvas : MonoBehaviour
     /// </summary>
     [Tooltip("The content UI bar, the content of the scroll view inside this canvas")]
     [SerializeField]
-    private GameObject content;
+    private GameObject playerListContent;
+
+    /// <summary>
+    /// The UI which is only enabled if the user is the host
+    /// </summary>
+    [Tooltip("The UI which is only enabled if the user is the host")]
+    [SerializeField]
+    private List<GameObject> hostUI;
+
+    [SerializeField] private Button horizontalIncreaseButton;
+    [SerializeField] private Text horizontalTextDisplay;
+    [SerializeField] private Button horizontalDecreaseButton;
+    [SerializeField] private Button verticalIncreaseButton;
+    [SerializeField] private Text verticalTextDisplay;
+    [SerializeField] private Button verticalDecreaseButton;
+    [SerializeField] private Button startGameButton;
+
+    public void Start()
+    {
+        // Enable or disable the hostUI
+        foreach (GameObject go in hostUI)
+        {
+            go.SetActive(IsHost);
+        }
+
+        if (IsHost)
+        {
+            // Setup onCLick listeners for the menu buttons
+            horizontalIncreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.X, 1));
+            horizontalDecreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.X, -1));
+            verticalIncreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.Y, 1));
+            verticalDecreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.Y, -1));
+
+            // Setup onClick for the start game button
+            startGameButton.onClick.AddListener(() => {
+                // Hide this menu and start the game
+                gameObject.SetActive(false);
+
+                Game.Singleton.startGame();
+            });
+        }
+
+        // Setup callbacks for the text to link to the NetworkVariables for the board size
+        Board.Singleton.addBoardSizeCallback(
+            (oldVal, newVal) => {
+                horizontalTextDisplay.text = newVal.ToString();
+            }, 
+            (oldVal, newVal) => {
+                verticalTextDisplay.text = newVal.ToString();
+            }
+        );
+
+        // Set the initial number values
+        (horizontalTextDisplay.text, verticalTextDisplay.text) = Board.Singleton.getBoardSizeAsString();
+    }
 
     private void Update()
     {
         // If the number of clients doesn't equal the child count we need to update the player names
-        if (NetworkManager.Singleton.ConnectedClients.Count != content.transform.childCount)
+        if (NetworkManager.Singleton.ConnectedClients.Count != playerListContent.transform.childCount)
         {
             setPlayerNames();
         }
@@ -42,15 +96,15 @@ public class LobbyCanvas : MonoBehaviour
         // Debug.Log("Setting player names");
 
         // Destroy every child of content
-        for (int i = 0; i < content.transform.childCount; i++)
+        for (int i = 0; i < playerListContent.transform.childCount; i++)
         {
-            Destroy(content.transform.GetChild(i).gameObject);
+            Destroy(playerListContent.transform.GetChild(i).gameObject);
         }
 
         // For each name in the list instantiate a prefab and set it's text value
         foreach(Player player in FindObjectsOfType<Player>())
         {
-            GameObject newText = Instantiate(verticalNameUIPrefab, content.transform);
+            GameObject newText = Instantiate(verticalNameUIPrefab, playerListContent.transform);
             newText.GetComponent<Text>().text = player.screenName.Value;
 
             // Add a callback so that if the players name changes the lobby name also changes
