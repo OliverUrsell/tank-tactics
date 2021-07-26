@@ -32,6 +32,12 @@ public class TitleScreen : MonoBehaviour
     private InputField playerName;
 
     /// <summary>
+    /// The Game lobby canvas which is enabled after the user has finished with the title screen
+    /// </summary>
+    [SerializeField]
+    private LobbyCanvas lobbyCanvas;
+
+    /// <summary>
     /// Links the onClick events of the buttons to the appropriate functions, can't do this in the inspector since it dosn't support > 1 parameter
     /// for <see cref="startClient(InputField, InputField)"/>
     /// </summary>
@@ -83,20 +89,20 @@ public class TitleScreen : MonoBehaviour
     /// <remarks>Called after the user joins a server, i.e. after startHost and startClient</remarks>
     private void joined(InputField name)
     {
-        foreach(Player player in FindObjectsOfType<Player>())
+
+        if (name.text.Replace(" ", "") == "")
         {
-            if(name.text.Replace(" ", "") == "")
-            {
-                // If the name is blank / only whitespace use a default name
-                player.setName("Blank");
-            }
-            else
-            {
-                player.setName(name.text);
-            }
+            // If the name is blank / only whitespace use a default name
+            Player.getLocalPlayer().setName("Blank");
+        }
+        else
+        {
+            Player.getLocalPlayer().setName(name.text);
         }
 
         gameObject.SetActive(false);
+        lobbyCanvas.gameObject.SetActive(true);
+
     }
 
 }

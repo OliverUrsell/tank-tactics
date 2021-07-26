@@ -58,6 +58,7 @@
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\PanCameraController.cs" />
     <Compile Include="Assets\Scripts\TitleScreen.cs" />
+    <Compile Include="Assets\Scripts\LobbyCanvas.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

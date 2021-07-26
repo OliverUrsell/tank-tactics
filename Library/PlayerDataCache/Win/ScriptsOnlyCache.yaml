@@ -2,6 +2,7 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - Board
+    - LobbyCanvas
     - PanCameraController
     - Player
     - Tile
@@ -29,9 +30,12 @@ ScriptsOnlyBuild:
     - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.ContentSizeFitter
     - UnityEngine.UI.GraphicRaycaster
+    - UnityEngine.UI.HorizontalLayoutGroup
     - UnityEngine.UI.Image
     - UnityEngine.UI.InputField
+    - UnityEngine.UI.LayoutElement
     - UnityEngine.UI.Mask
     - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Scrollbar
@@ -56,33 +60,41 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1500}
+      Script: {instanceID: 1498}
     - Class: 114
-      Script: {instanceID: 2026}
+      Script: {instanceID: 1606}
     - Class: 114
-      Script: {instanceID: 2096}
+      Script: {instanceID: 1656}
     - Class: 114
-      Script: {instanceID: 2154}
+      Script: {instanceID: 2024}
     - Class: 114
-      Script: {instanceID: 2342}
+      Script: {instanceID: 2094}
     - Class: 114
-      Script: {instanceID: 2448}
+      Script: {instanceID: 2152}
     - Class: 114
-      Script: {instanceID: 2508}
+      Script: {instanceID: 2340}
     - Class: 114
-      Script: {instanceID: 2626}
+      Script: {instanceID: 2446}
     - Class: 114
-      Script: {instanceID: 2672}
+      Script: {instanceID: 2506}
     - Class: 114
-      Script: {instanceID: 2826}
+      Script: {instanceID: 2624}
     - Class: 114
-      Script: {instanceID: 2834}
+      Script: {instanceID: 2670}
     - Class: 114
-      Script: {instanceID: 2914}
+      Script: {instanceID: 2824}
     - Class: 114
-      Script: {instanceID: 2972}
+      Script: {instanceID: 2832}
     - Class: 114
-      Script: {instanceID: 3198}
+      Script: {instanceID: 2912}
+    - Class: 114
+      Script: {instanceID: 2970}
+    - Class: 114
+      Script: {instanceID: 3080}
+    - Class: 114
+      Script: {instanceID: 3196}
+    - Class: 114
+      Script: {instanceID: 3276}
     - Class: 114
       Script: {instanceID: 3424}
     - Class: 114
@@ -94,7 +106,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 4128}
     - Class: 114
-      Script: {instanceID: 18748}
+      Script: {instanceID: 16178}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -214,7 +226,7 @@ ScriptsOnlyBuild:
     className: PlaymodeTestsController
   - hash:
       serializedVersion: 2
-      Hash: 494da3c95f83cb84ce85725534575617
+      Hash: 54082faca5ea547157b04d4894bc2e61
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -418,6 +430,12 @@ ScriptsOnlyBuild:
     className: BaseInput
   - hash:
       serializedVersion: 2
+      Hash: 79c9b85f6274021a46317c48da8d561f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TitleScreen
+  - hash:
+      serializedVersion: 2
       Hash: 18c222bef9ae745ce69ddde9b74337ca
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
@@ -604,10 +622,10 @@ ScriptsOnlyBuild:
     className: TouchInputModule
   - hash:
       serializedVersion: 2
-      Hash: 9683e38a1fae62ae79c3a2627624a574
+      Hash: c129525cd98951f11a47f93d978ac174
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: TitleScreen
+    className: LobbyCanvas
   platform: 5
   scenePathNames:
   - Assets/Scenes/Main.unity
