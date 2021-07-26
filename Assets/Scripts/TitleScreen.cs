@@ -4,7 +4,8 @@ using MLAPI.Transports.UNET;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TitleScreen : MonoBehaviour
+[RequireComponent(typeof(NetworkObject))]
+public class TitleScreen : NetworkBehaviour
 {
 
     /// <summary>
@@ -101,8 +102,15 @@ public class TitleScreen : MonoBehaviour
         }
 
         gameObject.SetActive(false);
-        lobbyCanvas.gameObject.SetActive(true);
 
+        if (IsServer)
+        {
+            // Spawn the lobby canvas
+            GameObject go = Instantiate(lobbyCanvas.gameObject);
+            go.GetComponent<NetworkObject>().Spawn();
+            // Set it active
+            go.GetComponent<LobbyCanvas>().isActive.Value = true;
+        }
     }
 
 }

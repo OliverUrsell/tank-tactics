@@ -2,6 +2,7 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - Board
+    - Game
     - LobbyCanvas
     - PanCameraController
     - Player
@@ -68,45 +69,47 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1658}
     - Class: 114
-      Script: {instanceID: 2094}
+      Script: {instanceID: 1738}
     - Class: 114
-      Script: {instanceID: 2152}
+      Script: {instanceID: 2096}
     - Class: 114
-      Script: {instanceID: 2340}
+      Script: {instanceID: 2154}
     - Class: 114
-      Script: {instanceID: 2446}
+      Script: {instanceID: 2342}
     - Class: 114
-      Script: {instanceID: 2506}
+      Script: {instanceID: 2448}
     - Class: 114
-      Script: {instanceID: 2624}
+      Script: {instanceID: 2508}
     - Class: 114
-      Script: {instanceID: 2670}
+      Script: {instanceID: 2626}
     - Class: 114
-      Script: {instanceID: 2698}
+      Script: {instanceID: 2672}
     - Class: 114
-      Script: {instanceID: 2826}
+      Script: {instanceID: 2700}
     - Class: 114
-      Script: {instanceID: 2834}
+      Script: {instanceID: 2828}
     - Class: 114
-      Script: {instanceID: 2914}
+      Script: {instanceID: 2836}
     - Class: 114
-      Script: {instanceID: 2972}
+      Script: {instanceID: 2916}
     - Class: 114
-      Script: {instanceID: 3082}
+      Script: {instanceID: 2974}
     - Class: 114
-      Script: {instanceID: 3198}
+      Script: {instanceID: 3084}
     - Class: 114
-      Script: {instanceID: 3278}
+      Script: {instanceID: 3200}
     - Class: 114
-      Script: {instanceID: 3426}
+      Script: {instanceID: 3280}
     - Class: 114
-      Script: {instanceID: 3504}
+      Script: {instanceID: 3428}
     - Class: 114
-      Script: {instanceID: 3670}
+      Script: {instanceID: 3506}
     - Class: 114
-      Script: {instanceID: 3804}
+      Script: {instanceID: 3672}
     - Class: 114
-      Script: {instanceID: 4130}
+      Script: {instanceID: 3808}
+    - Class: 114
+      Script: {instanceID: 4134}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -208,6 +211,12 @@ ScriptsOnlyBuild:
     className: TMP_FontAsset
   - hash:
       serializedVersion: 2
+      Hash: 42da41e7afe9b26b38969f449fe16dec
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Game
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -232,7 +241,7 @@ ScriptsOnlyBuild:
     className: Player
   - hash:
       serializedVersion: 2
-      Hash: de065e7f7dfff1ac5c9a240fbd7f143c
+      Hash: 4ed934aa8e571893dfbc777166822e92
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Board
@@ -286,7 +295,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: efa7f2e37e336e079b7baa9bd64f3d6e
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Tile
@@ -322,7 +331,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: bd805b9ba67dbc01b8703c8c05d72819
+      Hash: 804ea88bede96f20a22b16e8cb94f37b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LobbyCanvas
@@ -382,7 +391,7 @@ ScriptsOnlyBuild:
     className: Button
   - hash:
       serializedVersion: 2
-      Hash: f8060c20faa2af0ba4f36d0bc3ba8090
+      Hash: 919b0100f09c0de369ae61b457dca087
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PanCameraController
@@ -626,12 +635,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: AttributeText
   platform: 5
   scenePathNames:
   - Assets/Scenes/Main.unity

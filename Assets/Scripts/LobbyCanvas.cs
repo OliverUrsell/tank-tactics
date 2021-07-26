@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(NetworkObject))]
 public class LobbyCanvas : NetworkBehaviour
 {
     /// <summary>
@@ -30,6 +31,11 @@ public class LobbyCanvas : NetworkBehaviour
     [SerializeField]
     private List<GameObject> hostUI;
 
+    /// <summary>
+    /// Network variable which controls whether the lobby screen should be shown or not
+    /// </summary>
+    public NetworkVariable<bool> isActive = new NetworkVariable<bool>(false);
+
     [SerializeField] private Button horizontalIncreaseButton;
     [SerializeField] private Text horizontalTextDisplay;
     [SerializeField] private Button horizontalDecreaseButton;
@@ -43,10 +49,17 @@ public class LobbyCanvas : NetworkBehaviour
         // Enable or disable the hostUI
         foreach (GameObject go in hostUI)
         {
-            go.SetActive(IsHost);
+            go.SetActive(IsServer);
         }
 
-        if (IsHost)
+        // Setup listener to isActive to enable / disable the gameObject
+        isActive.OnValueChanged += (bool oldVal, bool newVal) =>
+        {
+            Debug.Log("Is Active changed");
+            gameObject.SetActive(newVal);
+        };
+
+        if (IsServer)
         {
             // Setup onCLick listeners for the menu buttons
             horizontalIncreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.X, 1));
@@ -56,9 +69,10 @@ public class LobbyCanvas : NetworkBehaviour
 
             // Setup onClick for the start game button
             startGameButton.onClick.AddListener(() => {
-                // Hide this menu and start the game
-                gameObject.SetActive(false);
+                // Hide this menu
+                isActive.Value = false;
 
+                // Start the game
                 Game.Singleton.startGame();
             });
         }
@@ -67,7 +81,7 @@ public class LobbyCanvas : NetworkBehaviour
         Board.Singleton.addBoardSizeCallback(
             (oldVal, newVal) => {
                 horizontalTextDisplay.text = newVal.ToString();
-            }, 
+            },
             (oldVal, newVal) => {
                 verticalTextDisplay.text = newVal.ToString();
             }
@@ -75,6 +89,9 @@ public class LobbyCanvas : NetworkBehaviour
 
         // Set the initial number values
         (horizontalTextDisplay.text, verticalTextDisplay.text) = Board.Singleton.getBoardSizeAsString();
+
+        // Set active or deactivate initially
+        gameObject.SetActive(isActive.Value);
     }
 
     private void Update()

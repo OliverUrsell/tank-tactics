@@ -1,10 +1,17 @@
+using MLAPI;
+using MLAPI.NetworkVariable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class Game : MonoBehaviour
+[RequireComponent(typeof(NetworkObject))]
+public class Game : NetworkBehaviour
 {
+
+    /// <summary>
+    /// Set to true when the game is active
+    /// </summary>
+    public NetworkVariable<bool> gameActive = new NetworkVariable<bool>(false);
 
     /// <summary>
     /// A reference to the main game camera
@@ -26,6 +33,15 @@ public class Game : MonoBehaviour
 
         // Start the camera controls as disabled
         gameCamera.GetComponent<PanCameraController>().enabled = false;
+
+        // Add a listener for when the game starts
+        gameActive.OnValueChanged += (oldVal, newVal) =>
+        {
+            // Perform local changes when the game starts
+
+            // Enable camera controls
+            gameCamera.GetComponent<PanCameraController>().enabled = true;
+        };
     }
 
     /// <summary>
@@ -33,10 +49,13 @@ public class Game : MonoBehaviour
     /// </summary>
     public void startGame()
     {
-        // Create the map
-        Board.Singleton.ConstructMap();
+        // Only the server can start the game
+        if (!IsServer) return;
 
-        // Enable camera controls
-        gameCamera.GetComponent<PanCameraController>().enabled = true;
+        // Create the map
+        Board.Singleton.ConstructMapServerRpc();
+
+        gameActive.Value = true;
+
     }
 }

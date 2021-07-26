@@ -1,14 +1,19 @@
 ﻿using MLAPI;
+using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(NetworkObject))]
 public class Board : NetworkBehaviour {
 
     [SerializeField]
     private GameObject tilePrefab;
+
+    [SerializeField]
+    private GameObject tankPrefab;
 
     /// <summary>
     /// Horizontal size of the board in number of tiles
@@ -124,11 +129,11 @@ public class Board : NetworkBehaviour {
         return new Bound(startX, startY, endX, endY);
     }
 
-
     /// <summary>
     /// Instantites and positions the tiles that make up the board, storing them in <see cref="Board.tiles"/>
     /// </summary>
-    public void ConstructMap()
+    [ServerRpc]
+    public void ConstructMapServerRpc()
     {
 
         Vector2 tileScale = tilePrefab.GetComponent<Transform>().localScale;
@@ -156,9 +161,15 @@ public class Board : NetworkBehaviour {
     /// <param name="x">The X position to put the tile in, in Unity Units</param>
     /// <param name="y">The Y position to put the tile in, in Unity Units</param>
     /// <returns><see cref="Tile"/> obect representing the placed tile</returns>
+    /// <remarks>Can only be called by the server</remarks>
     private Tile PlaceTile(float x, float y)
     {
-        return Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity).GetComponent<Tile>();
+        // Only the server can call this function
+        if (!IsServer) throw new System.AccessViolationException("Client tried to call place tile");
+
+        GameObject go =  Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity, transform);
+        go.GetComponent<NetworkObject>().Spawn();
+        return go.GetComponent<Tile>();
     }
 
     /// <summary>
@@ -170,5 +181,33 @@ public class Board : NetworkBehaviour {
     private Tile getTileAtPosition(int x, int y)
     {
         return tiles[x + y * boardSizeX.Value];
+    }
+
+    /// <summary>
+    /// Place the players on the board
+    /// </summary>
+    /// <remarks>Shouldn't be called if map hasn't been constructed</remarks>
+    [ServerRpc]
+    public void placePlayersServerRpc()
+    {
+        // Make sure map has been constructed
+        if(tiles.Count != 0){
+            throw new System.Exception("Place players called before the map is constructed");
+        }
+
+        createTankAtPosition(0, 0);
+
+    }
+
+    /// <summary>
+    /// Place a new tank at the given position
+    /// </summary>
+    /// <param name="x">The horizontal position for the tank to be placed in from the left</param>
+    /// <param name="y">The vertical position for the tank to be placed in from the bottom</param>
+    private void createTankAtPosition(int x, int y)
+    {
+        Transform tilePosition = getTileAtPosition(x, y).transform;
+
+        Instantiate(tankPrefab, tilePosition, transform);
     }
 }
