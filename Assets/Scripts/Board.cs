@@ -12,8 +12,22 @@ public class Board : NetworkBehaviour {
     [SerializeField]
     private GameObject tilePrefab;
 
+    /// <summary>
+    /// The Transform that acts as a parent for the generated tile prefabs
+    /// </summary>
+    [Tooltip("The Transform that acts as a parent for the generated tile prefabs")]
+    [SerializeField]
+    private Transform tilePrefabParent;
+
     [SerializeField]
     private GameObject tankPrefab;
+
+    /// <summary>
+    /// The Transform that acts as a parent for the generated tanks prefabs
+    /// </summary>
+    [Tooltip("The Transform that acts as a parent for the generated tank prefabs")]
+    [SerializeField]
+    private Transform tankPrefabParent;
 
     /// <summary>
     /// Horizontal size of the board in number of tiles
@@ -53,7 +67,7 @@ public class Board : NetworkBehaviour {
     public void Start()
     {
         if (Singleton == null) Singleton = this;
-        else throw new System.Exception("Attempted to create more than one Board instance");
+        else throw new System.Exception("Attempted to create more than one board instance");
     }
 
     public (int, int) getBoardSize()
@@ -95,7 +109,7 @@ public class Board : NetworkBehaviour {
                 if (boardSizeY.Value < 1) boardSizeY.Value = 1;
                 break;
             default:
-                throw new System.ArgumentException("Unkown Axis");
+                throw new ArgumentException("Unkown axis");
         }
     }
 
@@ -132,8 +146,7 @@ public class Board : NetworkBehaviour {
     /// <summary>
     /// Instantites and positions the tiles that make up the board, storing them in <see cref="Board.tiles"/>
     /// </summary>
-    [ServerRpc]
-    public void ConstructMapServerRpc()
+    public void ConstructMap()
     {
 
         Vector2 tileScale = tilePrefab.GetComponent<Transform>().localScale;
@@ -150,7 +163,7 @@ public class Board : NetworkBehaviour {
                 x += tileScale.x + tileGap
             )
             {
-                tiles.Add(PlaceTile(x, y));
+                PlaceTile(x, y);
             }
         }
     }
@@ -162,14 +175,24 @@ public class Board : NetworkBehaviour {
     /// <param name="y">The Y position to put the tile in, in Unity Units</param>
     /// <returns><see cref="Tile"/> obect representing the placed tile</returns>
     /// <remarks>Can only be called by the server</remarks>
-    private Tile PlaceTile(float x, float y)
+    private void PlaceTile(float x, float y)
     {
         // Only the server can call this function
         if (!IsServer) throw new System.AccessViolationException("Client tried to call place tile");
 
-        GameObject go =  Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity, transform);
+        GameObject go =  Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity, tilePrefabParent);
         go.GetComponent<NetworkObject>().Spawn();
-        return go.GetComponent<Tile>();
+
+        Tile newTile = go.GetComponent<Tile>();
+
+        // Add the tile to the tile list
+        tiles.Add(newTile);
+
+        // Get and set the grid position, since the tile is the last element of tiles currently
+        int gridPositionX = (tiles.Count - 1) % boardSizeX.Value;
+        int gridPositionY = (tiles.Count - 1 - gridPositionX)/ boardSizeX.Value;
+
+        newTile.setGridPosition(gridPositionX, gridPositionY);
     }
 
     /// <summary>
@@ -178,36 +201,104 @@ public class Board : NetworkBehaviour {
     /// <param name="x">The horizontal position to find from the left</param>
     /// <param name="y">The vertical position to find from the bottom</param>
     /// <returns><see cref="Tile"/> representing the tile at <paramref name="x"/>, <paramref name="y"/> from the bottom left</returns>
-    private Tile getTileAtPosition(int x, int y)
+    public Tile getTileAtPosition(int x, int y)
     {
         return tiles[x + y * boardSizeX.Value];
     }
 
     /// <summary>
-    /// Place the players on the board
+    /// Denotes possible placement methods for <see cref="spawnPlayers"/>
     /// </summary>
+    public enum PlacementMethod { Random }
+
+    /// <summary>
+    /// Denotes possible colouring methods for <see cref="spawnPlayers"/>
+    /// </summary>
+    public enum ColorMethod { Random }
+
+    /// <summary>
+    /// Place the players on the board using the given method
+    /// </summary>
+    /// <param name="placementMethod"></param>
     /// <remarks>Shouldn't be called if map hasn't been constructed</remarks>
-    [ServerRpc]
-    public void placePlayersServerRpc()
+    public void spawnPlayers(PlacementMethod placementMethod, ColorMethod colorMethod)
     {
+        if (!IsServer) throw new System.Exception("Client tried to call spawnPlayers");
+
         // Make sure map has been constructed
-        if(tiles.Count != 0){
+        if (tiles.Count == 0){
             throw new System.Exception("Place players called before the map is constructed");
         }
 
-        createTankAtPosition(0, 0);
+        foreach(Player player in FindObjectsOfType<Player>())
+        {
+
+            int positionX;
+            int positionY;
+
+            // For each player create a tank
+            switch (placementMethod)
+            {
+                case PlacementMethod.Random:
+
+                    // Generate a random position
+                    positionX = Mathf.FloorToInt(UnityEngine.Random.Range(1, boardSizeX.Value-1));
+                    positionY = Mathf.FloorToInt(UnityEngine.Random.Range(1, boardSizeY.Value-1));
+
+                    int maxTries = 10;
+
+                    int tries = 1;
+                    while (getTileAtPosition(positionX, positionY).isOccupied())
+                    {
+                        // Keep generating positions until one is unique, or reach max tries
+                        positionX = Mathf.FloorToInt(UnityEngine.Random.Range(1, boardSizeX.Value-1));
+                        positionY = Mathf.FloorToInt(UnityEngine.Random.Range(1, boardSizeY.Value-1));
+                        tries += 1;
+                        if (tries > maxTries) throw new System.Exception("Exceed max tries for random generation");
+                    }
+                    break;
+                default:
+                    throw new System.ArgumentException("Invalid placement method passed");
+            }
+
+            Color tankColour;
+
+            switch (colorMethod)
+            {
+                case ColorMethod.Random:
+                    // Generate any Hue with 1 saturation and value
+                    tankColour = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 1, 1);
+                    break;
+                default:
+                    throw new System.ArgumentException("Invalid colour method passed");
+            }
+
+            createTankAtPosition(player, tankColour, positionX, positionY);
+        }
 
     }
 
     /// <summary>
     /// Place a new tank at the given position
     /// </summary>
+    /// <param name="player">The <see cref="Player"/> this tank should represent</param>
+    /// <param name="color">The <see cref="Color"/> to assign to the tank</param>
     /// <param name="x">The horizontal position for the tank to be placed in from the left</param>
     /// <param name="y">The vertical position for the tank to be placed in from the bottom</param>
-    private void createTankAtPosition(int x, int y)
+    /// <remarks>Can only be called by the server</remarks>
+    private void createTankAtPosition(Player player, Color color, int x, int y)
     {
-        Transform tilePosition = getTileAtPosition(x, y).transform;
+        // Only the server can call this function
+        if (!IsServer) throw new System.AccessViolationException("Client tried to call createTankAtPosition");
 
-        Instantiate(tankPrefab, tilePosition, transform);
+        GameObject go = Instantiate(tankPrefab, new Vector2(), Quaternion.identity, tankPrefabParent);
+        go.GetComponent<NetworkObject>().Spawn();
+
+        Tank newTank = go.GetComponent<Tank>();
+
+        newTank.setGridPosition(x, y);
+        newTank.setPlayer(player);
+        newTank.setColour(color);
+        player.setTank(newTank);
     }
 }

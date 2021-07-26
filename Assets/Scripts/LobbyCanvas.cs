@@ -55,7 +55,6 @@ public class LobbyCanvas : NetworkBehaviour
         // Setup listener to isActive to enable / disable the gameObject
         isActive.OnValueChanged += (bool oldVal, bool newVal) =>
         {
-            Debug.Log("Is Active changed");
             gameObject.SetActive(newVal);
         };
 

@@ -60,6 +60,8 @@
     <Compile Include="Assets\Scripts\LobbyCanvas.cs" />
     <Compile Include="Assets\Scripts\PanCameraController.cs" />
     <Compile Include="Assets\Scripts\TitleScreen.cs" />
+    <Compile Include="Assets\Scripts\Tank.cs" />
+    <Compile Include="Assets\TankDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

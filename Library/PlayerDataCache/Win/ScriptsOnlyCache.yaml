@@ -6,6 +6,8 @@ ScriptsOnlyBuild:
     - LobbyCanvas
     - PanCameraController
     - Player
+    - Tank
+    - TankDisplay
     - Tile
     - TitleScreen
     Unity.2D.Tilemap.Editor.dll:
@@ -16,6 +18,8 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.SceneViewOpenTilePaletteHelper
     - UnityEditor.Tilemaps.TileDragAndDropManager
     - UnityEditor.Tilemaps.TilemapPrefabStageHelper
+    Unity.Multiplayer.MLAPI.Prototyping.dll:
+    - MLAPI.Prototyping.NetworkTransform
     Unity.Multiplayer.MLAPI.Runtime.dll:
     - MLAPI.NetworkManager
     - MLAPI.NetworkObject
@@ -56,6 +60,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
     - Class: 104
@@ -63,25 +69,25 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1460}
     - Class: 114
-      Script: {instanceID: 1500}
+      Script: {instanceID: 1462}
     - Class: 114
-      Script: {instanceID: 1608}
+      Script: {instanceID: 1502}
     - Class: 114
-      Script: {instanceID: 1658}
+      Script: {instanceID: 1610}
     - Class: 114
-      Script: {instanceID: 1738}
+      Script: {instanceID: 1660}
     - Class: 114
-      Script: {instanceID: 2096}
+      Script: {instanceID: 1740}
     - Class: 114
-      Script: {instanceID: 2154}
+      Script: {instanceID: 2098}
     - Class: 114
-      Script: {instanceID: 2342}
+      Script: {instanceID: 2156}
     - Class: 114
-      Script: {instanceID: 2448}
+      Script: {instanceID: 2344}
     - Class: 114
-      Script: {instanceID: 2508}
+      Script: {instanceID: 2450}
     - Class: 114
-      Script: {instanceID: 2626}
+      Script: {instanceID: 2510}
     - Class: 114
       Script: {instanceID: 2672}
     - Class: 114
@@ -90,6 +96,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 2828}
     - Class: 114
       Script: {instanceID: 2836}
+    - Class: 114
+      Script: {instanceID: 2852}
     - Class: 114
       Script: {instanceID: 2916}
     - Class: 114
@@ -107,9 +115,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 3672}
     - Class: 114
-      Script: {instanceID: 3808}
+      Script: {instanceID: 3806}
     - Class: 114
-      Script: {instanceID: 4134}
+      Script: {instanceID: 4132}
+    - Class: 114
+      Script: {instanceID: 22858}
+    - Class: 114
+      Script: {instanceID: 42734}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -131,6 +143,12 @@ ScriptsOnlyBuild:
     - Class: 850595691
       Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: ae83e830e7a90c0aff918c4c2e520825
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: GraphicRaycaster
   - hash:
       serializedVersion: 2
       Hash: 699619b86d9359741a4f58540298c80b
@@ -235,13 +253,13 @@ ScriptsOnlyBuild:
     className: PlaymodeTestsController
   - hash:
       serializedVersion: 2
-      Hash: 54082faca5ea547157b04d4894bc2e61
+      Hash: bc8d977095141dc80189c92b4604f40e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
   - hash:
       serializedVersion: 2
-      Hash: 4ed934aa8e571893dfbc777166822e92
+      Hash: 9f124fff282693dd5968ef5912ea3620
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Board
@@ -295,7 +313,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: e2a88d5c90ce391c250d8f939fd94b33
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Tile
@@ -305,12 +323,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestRunner.Utils
     className: TestRunCallbackListener
-  - hash:
-      serializedVersion: 2
-      Hash: ae83e830e7a90c0aff918c4c2e520825
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: GraphicRaycaster
   - hash:
       serializedVersion: 2
       Hash: f40fedccd4adbc76605bea6d67537e4b
@@ -635,6 +647,18 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
+  - hash:
+      serializedVersion: 2
+      Hash: 145d56e828eaddb7fe351c0562030900
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Tank
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TankDisplay
   platform: 5
   scenePathNames:
   - Assets/Scenes/Main.unity

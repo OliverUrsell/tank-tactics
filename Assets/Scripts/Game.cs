@@ -29,7 +29,7 @@ public class Game : NetworkBehaviour
     void Start()
     {
         if (Singleton == null) Singleton = this;
-        else throw new System.Exception("Attempted to create more than one Game instance");
+        else throw new System.Exception("Attempted to create more than one game instance");
 
         // Start the camera controls as disabled
         gameCamera.GetComponent<PanCameraController>().enabled = false;
@@ -53,7 +53,10 @@ public class Game : NetworkBehaviour
         if (!IsServer) return;
 
         // Create the map
-        Board.Singleton.ConstructMapServerRpc();
+        Board.Singleton.ConstructMap();
+
+        // Spawn the players
+        Board.Singleton.spawnPlayers(Board.PlacementMethod.Random, Board.ColorMethod.Random);
 
         gameActive.Value = true;
 
