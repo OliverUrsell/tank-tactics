@@ -876,6 +876,7 @@ MonoBehaviour:
     type: 3}
   playerListContent: {fileID: 274457213199800653}
   playerName: {fileID: 2063455866388495374}
+  controls: {fileID: 3629775768955593959}
 --- !u!114 &7553175960564616230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1595,7 +1596,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1402992401683918257}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.5081482
+  m_Size: 0.50629634
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

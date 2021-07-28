@@ -29,6 +29,13 @@ public class GameUI : NetworkBehaviour
     [Tooltip("The Text which has it's value set to the name of the local player and the local players tank colour")]
     private Text playerName;
 
+    /// <summary>
+    /// Reference to the controls so they aren't shown for dead players
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Reference to the controls so they aren't shown for dead players")]
+    public GameObject controls;
+
     public void Awake()
     {
 
@@ -64,6 +71,14 @@ public class GameUI : NetworkBehaviour
             // Reset to RGB(50,50,50) when the player dies
             localPlayer.playerDied.AddListener(() => { playerName.color = new Color(50, 50, 50); });
         }
+
+        // When the player dies hide the controls
+        if (!localPlayer.isAlive())
+        {
+            controls.SetActive(false);
+        }
+
+        localPlayer.playerDied.AddListener(() => { controls.SetActive(false); });
     }
 
     /// <summary>

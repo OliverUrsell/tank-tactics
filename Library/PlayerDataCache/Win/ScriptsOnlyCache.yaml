@@ -307,7 +307,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: 79bdc17f10c8282f10b8abb64c51bbef
+      Hash: 0e2fe6ee002eeac415aa8ddf8c5bb721
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameUI
