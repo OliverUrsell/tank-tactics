@@ -58,18 +58,11 @@ public class GameUI : NetworkBehaviour
     private Text timeRemaining;
 
     /// <summary>
-    /// Reference to the controls so they aren't shown for dead players
+    /// Reference to the objects that aren't shown for dead players
     /// </summary>
     [SerializeField]
-    [Tooltip("Reference to the controls so they aren't shown for dead players")]
-    private GameObject controls;
-
-    /// <summary>
-    /// Reference to the stats so they aren't shown for dead players
-    /// </summary>
-    [SerializeField]
-    [Tooltip("Reference to the stats so they aren't shown for dead players")]
-    private GameObject stats;
+    [Tooltip("Reference to the objects that aren't shown for dead players")]
+    private List<GameObject> aliveGameObjects;
 
     /// <summary>
     /// <see cref="Button"/> which is pressed when the user wants to upgrade their tanks range
@@ -110,6 +103,9 @@ public class GameUI : NetworkBehaviour
         playerName.text = localPlayer.screenName.Value;
         localPlayer.screenName.OnValueChanged += (oldVal, newVal) => playerName.text = localPlayer.screenName.Value;
 
+        timeRemaining.text = "Time to next point: " + Game.Singleton.getTimerValue();
+        Game.Singleton.addTimerCallback((oldVal, newVal) => timeRemaining.text = "Time to next point: " + Game.Singleton.getTimerValue());
+
         if (playerTank != null)
         {
             playerName.color = playerTank.getColour();
@@ -119,22 +115,27 @@ public class GameUI : NetworkBehaviour
             actionPoints.text = "Action Points: " + playerTank.actionPoints.Value.ToString();
             health.text = "Health: " + playerTank.health.Value.ToString();
             range.text = "Range: " + playerTank.range.Value.ToString();
-            timeRemaining.text = "Time to next point: " + Game.Singleton.getTimerValue();
 
             playerTank.actionPoints.OnValueChanged += (oldVal, newVal) => actionPoints.text = "Action Points: " + playerTank.actionPoints.Value.ToString();
             playerTank.health.OnValueChanged += (oldVal, newVal) => health.text = "Health: " + playerTank.health.Value.ToString();
             playerTank.range.OnValueChanged += (oldVal, newVal) => range.text = "Range: " + playerTank.range.Value.ToString();
-            Game.Singleton.addTimerCallback((oldVal, newVal) => timeRemaining.text = "Time to next point: " + Game.Singleton.getTimerValue());
         }
 
         // When the player dies hide the controls and stats
         if (!localPlayer.isAlive())
         {
-            controls.SetActive(false);
-            stats.SetActive(false);
+            foreach(GameObject go in aliveGameObjects)
+            {
+                go.SetActive(false);
+            }
         }
 
-        localPlayer.playerDied.AddListener(() => { controls.SetActive(false); stats.SetActive(false); });
+        localPlayer.playerDied.AddListener(() => {
+            foreach (GameObject go in aliveGameObjects)
+            {
+                go.SetActive(false);
+            }
+        });
 
         // When the upgradeRange button is pressed perform upgrade range on the local player
         upgradeRamgeButton.onClick.AddListener(() => { Player.upgradeRange(); });

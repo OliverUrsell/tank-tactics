@@ -316,6 +316,11 @@ MonoBehaviour:
   gameCamera: {fileID: 519420031}
   gameUIPrefab: {fileID: 3131119016210904855, guid: 0a63229468301fe44a16797f06e89911,
     type: 3}
+  actionPointSeconds:
+    m_InternalValue: 90
+  actionPointRemainingTime:
+    m_InternalValue: 0
+  actionPointTimerRunning: 0
   playerDiedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -497,6 +502,9 @@ MonoBehaviour:
         type: 3}
       PlayerPrefab: 0
     - Prefab: {fileID: 715844371725586485, guid: f5aa3b7269ca0bc4b8ebe97c38120877,
+        type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 1198726846894136456, guid: 6460ab022f6dda34fa6c0b421fee4fe0,
         type: 3}
       PlayerPrefab: 0
     PlayerPrefabHash:

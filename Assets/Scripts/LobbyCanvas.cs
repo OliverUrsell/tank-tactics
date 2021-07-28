@@ -35,13 +35,23 @@ public class LobbyCanvas : NetworkBehaviour
     /// Network variable which controls whether the lobby screen should be shown or not
     /// </summary>
     public NetworkVariableBool isActive = new NetworkVariableBool(false);
-
+    
+    [Space]
     [SerializeField] private Button horizontalIncreaseButton;
     [SerializeField] private Text horizontalTextDisplay;
     [SerializeField] private Button horizontalDecreaseButton;
+
+    [Space]
     [SerializeField] private Button verticalIncreaseButton;
     [SerializeField] private Text verticalTextDisplay;
     [SerializeField] private Button verticalDecreaseButton;
+
+    [Space]
+    [SerializeField] private Button timeBetweenPointsIncreaseButton;
+    [SerializeField] private Text timeBetweenPointsTextDisplay;
+    [SerializeField] private Button timeBetweenPointsDecreaseButton;
+
+    [Space]
     [SerializeField] private Button startGameButton;
 
     public void Start()
@@ -63,8 +73,18 @@ public class LobbyCanvas : NetworkBehaviour
             // Setup onCLick listeners for the menu buttons
             horizontalIncreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.X, 1));
             horizontalDecreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.X, -1));
+
             verticalIncreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.Y, 1));
             verticalDecreaseButton.onClick.AddListener(() => Board.Singleton.changeBoardSize(Board.Axis.Y, -1));
+
+            timeBetweenPointsIncreaseButton.onClick.AddListener(() => {
+                Game.Singleton.actionPointSeconds.Value++;
+            });
+
+            timeBetweenPointsDecreaseButton.onClick.AddListener(() => {
+                if(Game.Singleton.actionPointSeconds.Value > 1)
+                    Game.Singleton.actionPointSeconds.Value--;
+            });
 
             // Setup onClick for the start game button
             startGameButton.onClick.AddListener(() => {
@@ -86,8 +106,12 @@ public class LobbyCanvas : NetworkBehaviour
             }
         );
 
+        Game.Singleton.actionPointSeconds.OnValueChanged += (oldVal, newVal) => timeBetweenPointsTextDisplay.text = newVal.ToString();
+
         // Set the initial number values
         (horizontalTextDisplay.text, verticalTextDisplay.text) = Board.Singleton.getBoardSizeAsString();
+
+        timeBetweenPointsTextDisplay.text = Game.Singleton.actionPointSeconds.Value.ToString();
 
         // Set active or deactivate initially
         gameObject.SetActive(isActive.Value);

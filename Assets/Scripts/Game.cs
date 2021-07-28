@@ -32,7 +32,8 @@ public class Game : NetworkBehaviour
     /// <summary>
     /// The number of seconds between each action point being given out
     /// </summary>
-    private const float actionPointSeconds = 90;
+    [SerializeField]
+    public NetworkVariableInt actionPointSeconds = new NetworkVariableInt(90);
 
     [SerializeField]
     public NetworkVariableFloat actionPointRemainingTime = new NetworkVariableFloat();
@@ -86,6 +87,8 @@ public class Game : NetworkBehaviour
 
         gameActive.Value = true;
 
+        GameInfo.Singleton.printToGameInfo("Game Started");
+
     }
 
     public UnityEvent playerDiedEvent;
@@ -112,7 +115,7 @@ public class Game : NetworkBehaviour
     public void resetAndStartActionPointTimer()
     {
         if (!IsServer) throw new System.Exception("Client tried to call resetAndStartActionPointTimer");
-        actionPointRemainingTime.Value = actionPointSeconds;
+        actionPointRemainingTime.Value = actionPointSeconds.Value;
         actionPointTimerRunning = true;
     }
 
@@ -122,7 +125,7 @@ public class Game : NetworkBehaviour
     public void resetAndStopActionPointTimer()
     {
         if (!IsServer) throw new System.Exception("Client tried to call resetAndStopActionPointTimer");
-        actionPointRemainingTime.Value = actionPointSeconds;
+        actionPointRemainingTime.Value = actionPointSeconds.Value;
         actionPointTimerRunning = false;
     }
 
@@ -134,6 +137,9 @@ public class Game : NetworkBehaviour
         if (!IsServer) throw new System.Exception("Client tried to call actionPointTimerDone");
         // When the timer is done, reset it and start again and give everyone an action point
         Player.giveAllActionPoint();
+
+        GameInfo.Singleton.printToGameInfo("Action points given out");
+
         resetAndStartActionPointTimer();
     }
 

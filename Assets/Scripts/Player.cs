@@ -185,6 +185,8 @@ public class Player : NetworkBehaviour
         // Add one to the tanks range
         getTank().range.Value++;
 
+        GameInfo.Singleton.printToGameInfo(screenName.Value + " upgraded their range to " + getTank().range.Value.ToString(), getTank().getColour());
+
     }
 
 }

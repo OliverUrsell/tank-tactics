@@ -3,6 +3,7 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - Board
     - Game
+    - GameInfo
     - GameUI
     - LobbyCanvas
     - NetworkObjectParent
@@ -24,9 +25,6 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.SceneViewOpenTilePaletteHelper
     - UnityEditor.Tilemaps.TileDragAndDropManager
     - UnityEditor.Tilemaps.TilemapPrefabStageHelper
-    Unity.Multiplayer.MLAPI.Editor.dll:
-    - UnityEditor.NetworkBehaviourEditor
-    - UnityEditor.NetworkObjectEditor
     Unity.Multiplayer.MLAPI.Prototyping.dll:
     - MLAPI.Prototyping.NetworkTransform
     Unity.Multiplayer.MLAPI.Runtime.dll:
@@ -39,9 +37,6 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
-    UnityEditor.UI.dll:
-    - UnityEditor.UI.CanvasScalerEditor
-    - UnityEditor.UI.HorizontalOrVerticalLayoutGroupEditor
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -83,69 +78,71 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1462}
     - Class: 114
-      Script: {instanceID: 1504}
+      Script: {instanceID: 1502}
     - Class: 114
-      Script: {instanceID: 1552}
+      Script: {instanceID: 1550}
     - Class: 114
-      Script: {instanceID: 1586}
+      Script: {instanceID: 1584}
     - Class: 114
-      Script: {instanceID: 1616}
+      Script: {instanceID: 1614}
     - Class: 114
-      Script: {instanceID: 1666}
+      Script: {instanceID: 1664}
     - Class: 114
-      Script: {instanceID: 1746}
+      Script: {instanceID: 1744}
     - Class: 114
-      Script: {instanceID: 1840}
+      Script: {instanceID: 1838}
     - Class: 114
-      Script: {instanceID: 2106}
+      Script: {instanceID: 2104}
     - Class: 114
-      Script: {instanceID: 2164}
+      Script: {instanceID: 2162}
     - Class: 114
-      Script: {instanceID: 2336}
+      Script: {instanceID: 2334}
     - Class: 114
-      Script: {instanceID: 2354}
+      Script: {instanceID: 2352}
     - Class: 114
-      Script: {instanceID: 2460}
+      Script: {instanceID: 2458}
     - Class: 114
-      Script: {instanceID: 2520}
+      Script: {instanceID: 2518}
     - Class: 114
-      Script: {instanceID: 2682}
+      Script: {instanceID: 2680}
     - Class: 114
-      Script: {instanceID: 2710}
+      Script: {instanceID: 2708}
     - Class: 114
-      Script: {instanceID: 2838}
+      Script: {instanceID: 2836}
     - Class: 114
-      Script: {instanceID: 2846}
+      Script: {instanceID: 2844}
     - Class: 114
-      Script: {instanceID: 2862}
+      Script: {instanceID: 2860}
     - Class: 114
-      Script: {instanceID: 2926}
+      Script: {instanceID: 2924}
     - Class: 114
-      Script: {instanceID: 2960}
+      Script: {instanceID: 2958}
     - Class: 114
-      Script: {instanceID: 2986}
+      Script: {instanceID: 2984}
     - Class: 114
-      Script: {instanceID: 3096}
+      Script: {instanceID: 3094}
     - Class: 114
-      Script: {instanceID: 3212}
+      Script: {instanceID: 3210}
     - Class: 114
-      Script: {instanceID: 3224}
+      Script: {instanceID: 3222}
     - Class: 114
-      Script: {instanceID: 3294}
+      Script: {instanceID: 3292}
     - Class: 114
-      Script: {instanceID: 3442}
+      Script: {instanceID: 3440}
     - Class: 114
-      Script: {instanceID: 3520}
+      Script: {instanceID: 3518}
     - Class: 114
-      Script: {instanceID: 3594}
+      Script: {instanceID: 3592}
     - Class: 114
-      Script: {instanceID: 3688}
+      Script: {instanceID: 3686}
     - Class: 114
-      Script: {instanceID: 3822}
+      Script: {instanceID: 3820}
     - Class: 114
-      Script: {instanceID: 4092}
+      Script: {instanceID: 4090}
     - Class: 114
-      Script: {instanceID: 4150}
+      Script: {instanceID: 4148}
+    - Class: 114
+      Script: {instanceID: 98672}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -265,7 +262,7 @@ ScriptsOnlyBuild:
     className: TMP_FontAsset
   - hash:
       serializedVersion: 2
-      Hash: 7ce3247472c6862d988a7c673b2b419f
+      Hash: de134223f0477e0d1acf058a4993f75f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Game
@@ -313,7 +310,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: 3373a297f8ea0af8ea3375f2d275d2a7
+      Hash: cc3f9a3fa6b572f7053284720d919caa
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameUI
@@ -391,7 +388,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 117254a2b0756b15ca866ed17bcc71f5
+      Hash: 780837a93894788b414cd79470082d6f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LobbyCanvas
@@ -719,6 +716,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
+  - hash:
+      serializedVersion: 2
+      Hash: 07ebc51043999d3ac7a4a36b1fa8f089
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameInfo
   platform: 5
   scenePathNames:
   - Assets/Scenes/Main.unity
