@@ -27,6 +27,11 @@ public class Player : NetworkBehaviour
     private Canvas deadScreen;
 
     /// <summary>
+    /// If true the player is definitely dead
+    /// </summary>
+    private bool dead = false;
+
+    /// <summary>
     /// Set the tank that represents this player, can only be called once, normally when the player is created
     /// </summary>
     /// <param name="tank">The tank that should represent this players</param>
@@ -110,7 +115,7 @@ public class Player : NetworkBehaviour
     /// <returns><see cref="true"/> if the player is alive <see cref="false"/> otherwise</returns>
     /// <remarks>Before game has started returns true, if game is active this guarantees tank is set </remarks>
     // If the game is active and the tank is not set player is dead, otherwise player is alive
-    public bool isAlive() => !(Game.Singleton.gameActive.Value && tank == null);
+    public bool isAlive() => !(Game.Singleton.gameActive.Value && tank == null) && !dead;
 
     /// <summary>
     /// Invoked when the player dies
@@ -122,6 +127,9 @@ public class Player : NetworkBehaviour
     /// </summary>
     public void die()
     {
+
+        dead = true;
+
         if (IsServer)
         {
             // Destroy the tank

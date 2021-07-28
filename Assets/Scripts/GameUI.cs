@@ -89,6 +89,8 @@ public class GameUI : NetworkBehaviour
     {
         if (!IsServer) throw new System.Exception("Client tried to call UpdateNames");
 
+        Debug.Log("Updating Names...");
+
         // Destroy every child of content
         for (int i = 0; i < playerListContent.transform.childCount; i++)
         {
