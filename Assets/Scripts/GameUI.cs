@@ -23,18 +23,46 @@ public class GameUI : NetworkBehaviour
     private GameObject playerListContent;
 
     /// <summary>
-    /// The <see cref="Text"/> which has it's value set to the name of the local player
+    /// The <see cref="Text"/> which has it's value set to the name of the local player, and colour to the local players tank colour
     /// </summary>
     [SerializeField]
-    [Tooltip("The Text which has it's value set to the name of the local player and the local players tank colour")]
+    [Tooltip("The text which has it's value set to the name of the local player and the local players tank colour")]
     private Text playerName;
+
+    /// <summary>
+    /// The <see cref="Text"/> which has it's value set to the action points of the local player
+    /// </summary>
+    [SerializeField]
+    [Tooltip("The text which has it's value set to the action points of the local player")]
+    private Text actionPoints;
+
+    /// <summary>
+    /// The <see cref="Text"/> which has it's value set to the health of the local players tank
+    /// </summary>
+    [SerializeField]
+    [Tooltip("The text which has it's value set to the health of the local player")]
+    private Text health;
+
+    /// <summary>
+    /// The <see cref="Text"/> which has it's value set to the range of the local players tank
+    /// </summary>
+    [SerializeField]
+    [Tooltip("The text which has it's value set to the range of the local player")]
+    private Text range;
 
     /// <summary>
     /// Reference to the controls so they aren't shown for dead players
     /// </summary>
     [SerializeField]
     [Tooltip("Reference to the controls so they aren't shown for dead players")]
-    public GameObject controls;
+    private GameObject controls;
+
+    /// <summary>
+    /// <see cref="Button"/> which is pressed when the user wants to upgrade their tanks range
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Button which is pressed when the user wants to upgrade their tanks range")]
+    private Button upgradeRamgeButton;
 
     public void Awake()
     {
@@ -63,9 +91,19 @@ public class GameUI : NetworkBehaviour
     public void Start()
     {
         Player localPlayer = Player.getLocalPlayer();
-        playerName.text = localPlayer.screenName.Value;
         Tank playerTank = localPlayer.getTank();
-        if(playerTank != null)
+
+        playerName.text = localPlayer.screenName.Value;
+        actionPoints.text = "Action Points: " + playerTank.actionPoints.Value.ToString();
+        health.text = "Health: " + playerTank.health.Value.ToString();
+        range.text = "Range: " + playerTank.range.Value.ToString();
+
+        localPlayer.screenName.OnValueChanged += (oldVal, newVal) => playerName.text = localPlayer.screenName.Value;
+        playerTank.actionPoints.OnValueChanged += (oldVal, newVal) => actionPoints.text = "Action Points: " + playerTank.actionPoints.Value.ToString();
+        playerTank.health.OnValueChanged += (oldVal, newVal) => health.text = "Health: " + playerTank.health.Value.ToString();
+        playerTank.range.OnValueChanged += (oldVal, newVal) => range.text = "Range: " + playerTank.range.Value.ToString();
+
+        if (playerTank != null)
         {
             playerName.color = playerTank.getColour();
             // Reset to RGB(50,50,50) when the player dies
@@ -79,6 +117,9 @@ public class GameUI : NetworkBehaviour
         }
 
         localPlayer.playerDied.AddListener(() => { controls.SetActive(false); });
+
+        // When the upgradeRange button is pressed perform upgrade range on the local player
+        upgradeRamgeButton.onClick.AddListener(() => { Player.upgradeRange(); });
     }
 
     /// <summary>

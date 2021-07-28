@@ -147,4 +147,34 @@ public class Player : NetworkBehaviour
         die(); // Set the player to die
     }
 
+    /// <summary>
+    /// Performs upgrade range on the local player
+    /// </summary>
+    public static void upgradeRange()
+    {
+        Player.getLocalPlayer().upgradeRangeServerRpc();
+    }
+
+    /// <summary>
+    /// Perform upgrade range on this player from the server side
+    /// </summary>
+    [ServerRpc]
+    public void upgradeRangeServerRpc()
+    {
+        // Guaranteed to be the server
+
+        // Check the player is alive
+        if (!isAlive()) throw new System.Exception("Dead player tried to upgrade their range");
+
+        // Don't do anything if the tanks action points are <1
+        if (getTank().actionPoints.Value < 1) return;
+
+        // Subtract one from the tanks action points
+        getTank().actionPoints.Value--;
+
+        // Add one to the tanks range
+        getTank().range.Value++;
+
+    }
+
 }
