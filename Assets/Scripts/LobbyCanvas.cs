@@ -34,7 +34,7 @@ public class LobbyCanvas : NetworkBehaviour
     /// <summary>
     /// Network variable which controls whether the lobby screen should be shown or not
     /// </summary>
-    public NetworkVariable<bool> isActive = new NetworkVariable<bool>(false);
+    public NetworkVariableBool isActive = new NetworkVariableBool(false);
 
     [SerializeField] private Button horizontalIncreaseButton;
     [SerializeField] private Text horizontalTextDisplay;

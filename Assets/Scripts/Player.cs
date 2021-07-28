@@ -10,7 +10,7 @@ public class Player : NetworkBehaviour
 {
 
     [SerializeField]
-    public NetworkVariable<string> screenName = new NetworkVariable<string>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.OwnerOnly});
+    public NetworkVariableString screenName = new NetworkVariableString(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.OwnerOnly});
 
     /// <summary>
     /// The tank that this player is connected to
@@ -23,7 +23,7 @@ public class Player : NetworkBehaviour
     /// Keeps track of whether the tank has been set so that the tank isn't set twice
     /// </summary>
     [SerializeField]
-    private NetworkVariable<bool> tankSet = new NetworkVariable<bool>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly}, false);
+    private NetworkVariableBool tankSet = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly}, false);
 
     /// <summary>
     /// The UI to display if the user is dead
@@ -45,12 +45,32 @@ public class Player : NetworkBehaviour
     }
 
     /// <summary>
+    /// Get the tank this player is represented by, throws error if tankSet is false
+    /// </summary>
+    /// <returns><see cref="Tank"/> this player is represented by</returns>
+    public Tank getTank()
+    {
+        if (!tankSet.Value) { throw new System.Exception("Tried to access null tank"); }
+        return tank.Value;
+    }
+
+    /// <summary>
     /// Get the player object which represents the local client
     /// </summary>
-    /// <returns>The Player object that represents the local client</returns>
+    /// <returns><see cref="Player"/> object that represents the local client</returns>
     public static Player getLocalPlayer()
     {
-        return NetworkManager.Singleton.ConnectedClients[NetworkManager.Singleton.LocalClientId].PlayerObject.GetComponent<Player>();
+        return getPlayerById(NetworkManager.Singleton.LocalClientId);
+    }
+
+    /// <summary>
+    /// Get the player object which represents the client with the given id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static Player getPlayerById(ulong id)
+    {
+        return NetworkManager.Singleton.ConnectedClients[id].PlayerObject.GetComponent<Player>();
     }
 
     /// <summary>
@@ -70,21 +90,39 @@ public class Player : NetworkBehaviour
         if (IsLocalPlayer)
         {
             // Check to see if we're dead
-            if(Game.Singleton.gameActive.Value && !tankSet.Value)
+            if(!isAlive())
             {
-                // If the game is active and the tank is not set we are dead
                 deadScreen.gameObject.SetActive(true);
             }
         }
     }
 
-    public void OnDestroy()
+    /// <summary>
+    /// Check if the player is alive or not
+    /// </summary>
+    /// <returns><see cref="true"/> if the player is alive <see cref="false"/> otherwise</returns>
+    /// <remarks>Before game has started returns true, if game is active this guarantees tank is set </remarks>
+    // If the game is active and the tank is not set player is dead, otherwise player is alive
+    public bool isAlive() => !(Game.Singleton.gameActive.Value && !tankSet.Value);
+
+    /// <summary>
+    /// Called when the player dies
+    /// </summary>
+    public void die()
     {
         if (IsServer)
         {
             // Destroy the tank
             if (tankSet.Value) Destroy(tank.Value.gameObject);
         }
+        
+        Game.Singleton.playerDied();
+    }
+
+    public void OnDestroy()
+    {
+        // When the player disconnects the player object is destroyed
+        die(); // Set the player to die
     }
 
 }

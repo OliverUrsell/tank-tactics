@@ -4,6 +4,7 @@ using MLAPI.NetworkVariable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 //TODO: What happens to the tank if a player leaves mid game, at the moment nothing
 
@@ -21,13 +22,13 @@ public class Tank : NetworkBehaviour
     /// </summary>
     /// <remarks>Can only be set once, usually on creation</remarks>
     [SerializeField]
-    private NetworkVariable<Color> tankColour = new NetworkVariable<Color>();
+    private NetworkVariableColor tankColour = new NetworkVariableColor();
 
     /// <summary>
     /// Keeps track of whether <see cref="tankColour"/> has been set so that the colour isn't set twice
     /// </summary>
     [SerializeField]
-    private NetworkVariable<bool> tankColourSet = new NetworkVariable<bool>(false);
+    private NetworkVariableBool tankColourSet = new NetworkVariableBool(false);
 
     /// <summary>
     /// The tile this tank is currently on
@@ -46,7 +47,25 @@ public class Tank : NetworkBehaviour
     /// Keeps track of whether <see cref="player"/> has been set
     /// </summary>
     [SerializeField]
-    private NetworkVariable<bool> playerSet = new NetworkVariable<bool>(false); 
+    private NetworkVariableBool playerSet = new NetworkVariableBool(false);
+
+    /// <summary>
+    /// Keeps track of the health of the tank
+    /// </summary>
+    /// <remarks>Initially set to 3</remarks>
+    public NetworkVariableInt health = new NetworkVariableInt(3);
+
+    /// <summary>
+    /// Keeps track of the action points of the tank
+    /// </summary>
+    /// <remarks>Initially set to 1</remarks>
+    public NetworkVariableInt actionPoints = new NetworkVariableInt(1);
+
+    /// <summary>
+    /// Keeps track of the range of the tank
+    /// </summary>
+    /// <remarks>Initially set to 1</remarks>
+    public NetworkVariableInt range = new NetworkVariableInt(1);
 
     public void Update()
     {
@@ -76,6 +95,11 @@ public class Tank : NetworkBehaviour
     }
 
     /// <summary>
+    /// An event which is called when the tank changes position
+    /// </summary>
+    public UnityEvent positionChanged;
+
+    /// <summary>
     /// Moves the tank to the new grid position
     /// </summary>
     /// <param name="x">The horizontal position from the left</param>
@@ -98,6 +122,9 @@ public class Tank : NetworkBehaviour
 
         // Set our physical position
         transform.position = locationTile.Value.transform.position;
+
+        // Trigger the position changed event
+        positionChanged.Invoke();
 
     }
 
@@ -122,6 +149,12 @@ public class Tank : NetworkBehaviour
         tankColour.Value = color;
         tankColourSet.Value = true;
     }
+
+    /// <summary>
+    /// Get the tank colour
+    /// </summary>
+    /// <returns><see cref="Color"/> representing the colour of the tank</returns>
+    public Color getColour() => tankColour.Value;
 
     public void OnDestroy()
     {

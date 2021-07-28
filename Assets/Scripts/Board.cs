@@ -36,7 +36,7 @@ public class Board : NetworkBehaviour {
     [Header("Board Size")]
     [MinAttribute(1)]
     [SerializeField]
-    private NetworkVariable<int> boardSizeX = new NetworkVariable<int>(10);
+    private NetworkVariableInt boardSizeX = new NetworkVariableInt(10);
 
     /// <summary>
     /// Vertical size of the board in number of tiles
@@ -44,7 +44,7 @@ public class Board : NetworkBehaviour {
     [Tooltip("Vertical size of the board in number of tiles")]
     [MinAttribute(1)]
     [SerializeField]
-    private NetworkVariable<int> boardSizeY = new NetworkVariable<int>(10);
+    private NetworkVariableInt boardSizeY = new NetworkVariableInt(10);
 
     /// <summary>
     /// The gap between tiles in unity units
@@ -80,8 +80,7 @@ public class Board : NetworkBehaviour {
         return (boardSizeX.Value.ToString(), boardSizeX.Value.ToString());
     }
 
-    public void addBoardSizeCallback(NetworkVariable<int>.OnValueChangedDelegate boardSizeXFunction, NetworkVariable<int>.OnValueChangedDelegate boardSizeYFunction) {
-        // NetworkVariable<int>.OnValueChangedDelegate
+    public void addBoardSizeCallback(NetworkVariableInt.OnValueChangedDelegate boardSizeXFunction, NetworkVariableInt.OnValueChangedDelegate boardSizeYFunction) {
         boardSizeX.OnValueChanged += boardSizeXFunction;
         boardSizeY.OnValueChanged += boardSizeYFunction;
     }
@@ -144,7 +143,7 @@ public class Board : NetworkBehaviour {
     }
 
     /// <summary>
-    /// Instantites and positions the tiles that make up the board, storing them in <see cref="Board.tiles"/>
+    /// Instantiates and positions the tiles that make up the board, storing them in <see cref="Board.tiles"/>
     /// </summary>
     public void ConstructMap()
     {
@@ -153,13 +152,13 @@ public class Board : NetworkBehaviour {
 
         for (
             float y = -(boardSizeY.Value / 2 * (tileScale.y + tileGap));
-            y < boardSizeY.Value / 2 * tileScale.y;
+            y < boardSizeY.Value / 2 * tileScale.y + (boardSizeY.Value % 2);
             y += tileScale.y + tileGap
         )
         {
             for (
                 float x = -(boardSizeX.Value / 2 * (tileScale.x + tileGap));
-                x < boardSizeX.Value / 2 * tileScale.x;
+                x < boardSizeX.Value / 2 * tileScale.x + (boardSizeX.Value % 2);
                 x += tileScale.x + tileGap
             )
             {

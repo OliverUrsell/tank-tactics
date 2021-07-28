@@ -1,8 +1,10 @@
 using MLAPI;
 using MLAPI.NetworkVariable;
+using MLAPI.NetworkVariable.Collections;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(NetworkObject))]
 public class Game : NetworkBehaviour
@@ -11,7 +13,7 @@ public class Game : NetworkBehaviour
     /// <summary>
     /// Set to true when the game is active
     /// </summary>
-    public NetworkVariable<bool> gameActive = new NetworkVariable<bool>(false);
+    public NetworkVariableBool gameActive = new NetworkVariableBool(false);
 
     /// <summary>
     /// A reference to the main game camera
@@ -19,6 +21,13 @@ public class Game : NetworkBehaviour
     [Tooltip("The main game camera with a PanCameraController")]
     [SerializeField]
     private Camera gameCamera;
+
+    /// <summary>
+    /// The UI to be shown when the game starts
+    /// </summary>
+    [Tooltip("The UI to be shown when the game starts")]
+    [SerializeField]
+    private GameObject gameUIPrefab;
 
     /// <summary>
     /// Singleton of the game object, ensures only one game instance can be created
@@ -58,7 +67,20 @@ public class Game : NetworkBehaviour
         // Spawn the players
         Board.Singleton.spawnPlayers(Board.PlacementMethod.Random, Board.ColorMethod.Random);
 
+        // Create the gameUI
+        Instantiate(gameUIPrefab).GetComponent<NetworkObject>().Spawn();
+
         gameActive.Value = true;
 
+    }
+
+    public UnityEvent playerDiedEvent;
+    
+    /// <summary>
+    /// Called whenever a player dies
+    /// </summary>
+    public void playerDied()
+    {
+        playerDiedEvent.Invoke();
     }
 }

@@ -54,14 +54,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Game.cs" />
+    <Compile Include="Assets\Scripts\Tank.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Board.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\LobbyCanvas.cs" />
+    <Compile Include="Assets\Scripts\TankDisplay.cs" />
     <Compile Include="Assets\Scripts\PanCameraController.cs" />
     <Compile Include="Assets\Scripts\TitleScreen.cs" />
-    <Compile Include="Assets\Scripts\Tank.cs" />
-    <Compile Include="Assets\TankDisplay.cs" />
+    <Compile Include="Assets\Scripts\TankInfoCanvas.cs" />
+    <Compile Include="Assets\Scripts\SmallInfoCanvas.cs" />
+    <Compile Include="Assets\Scripts\GameUI.cs" />
+    <Compile Include="Assets\Scripts\NetworkText.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

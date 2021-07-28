@@ -11,7 +11,7 @@ public class Tile : NetworkBehaviour {
     /// Whether or not this tile is occupied with a tank
     /// </summary>
     [SerializeField]
-    private NetworkVariable<bool> occupied = new NetworkVariable<bool>(false);
+    private NetworkVariableBool occupied = new NetworkVariableBool(false);
 
     /// <summary>
     /// The tank that occupies this square, null if nothing
@@ -23,7 +23,7 @@ public class Tile : NetworkBehaviour {
     /// The grid position this tile is in
     /// </summary>
     [SerializeField]
-    private NetworkVariable<Vector2> gridPosition = new NetworkVariable<Vector2>(new Vector2(-1, -1));
+    private NetworkVariableVector2 gridPosition = new NetworkVariableVector2(new Vector2(-1, -1));
 
     /// <summary>
     /// Get the grid position of the tile

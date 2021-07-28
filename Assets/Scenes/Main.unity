@@ -292,6 +292,7 @@ GameObject:
   - component: {fileID: 129875465}
   - component: {fileID: 129875464}
   - component: {fileID: 129875466}
+  - component: {fileID: 129875467}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -314,6 +315,11 @@ MonoBehaviour:
   gameActive:
     m_InternalValue: 0
   gameCamera: {fileID: 519420031}
+  gameUIPrefab: {fileID: 3131119016210904855, guid: 0a63229468301fe44a16797f06e89911,
+    type: 3}
+  playerDiedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &129875465
 Transform:
   m_ObjectHideFlags: 0
@@ -345,6 +351,18 @@ MonoBehaviour:
   PrefabHashGenerator: Game
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
+--- !u!114 &129875467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129875463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b2c5b51e43d6e4d85866712133debc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &205488081
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,6 +504,12 @@ MonoBehaviour:
         type: 3}
       PlayerPrefab: 0
     - Prefab: {fileID: 2598987671962191710, guid: b42c7204eab26f54dbe50a7f6c2812fc,
+        type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 3131119016210904855, guid: 0a63229468301fe44a16797f06e89911,
+        type: 3}
+      PlayerPrefab: 0
+    - Prefab: {fileID: 715844371725586485, guid: f5aa3b7269ca0bc4b8ebe97c38120877,
         type: 3}
       PlayerPrefab: 0
     PlayerPrefabHash:
