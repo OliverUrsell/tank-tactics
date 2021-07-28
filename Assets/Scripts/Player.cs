@@ -147,6 +147,16 @@ public class Player : NetworkBehaviour
         die(); // Set the player to die
     }
 
+    // Give every player an action point
+    public static void giveAllActionPoint()
+    {
+        if (!IsServer) throw new System.Exception("Client tried to call giveAllActionPoint");
+        foreach (Tank tank in FindObjectsOfType<Tank>())
+        {
+            tank.actionPoints.Value++;
+        }
+    }
+
     /// <summary>
     /// Performs upgrade range on the local player
     /// </summary>

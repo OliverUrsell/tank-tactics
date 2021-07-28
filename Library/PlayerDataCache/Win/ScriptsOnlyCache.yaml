@@ -24,6 +24,9 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.SceneViewOpenTilePaletteHelper
     - UnityEditor.Tilemaps.TileDragAndDropManager
     - UnityEditor.Tilemaps.TilemapPrefabStageHelper
+    Unity.Multiplayer.MLAPI.Editor.dll:
+    - UnityEditor.NetworkBehaviourEditor
+    - UnityEditor.NetworkObjectEditor
     Unity.Multiplayer.MLAPI.Prototyping.dll:
     - MLAPI.Prototyping.NetworkTransform
     Unity.Multiplayer.MLAPI.Runtime.dll:
@@ -36,6 +39,9 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
+    UnityEditor.UI.dll:
+    - UnityEditor.UI.CanvasScalerEditor
+    - UnityEditor.UI.HorizontalOrVerticalLayoutGroupEditor
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -77,69 +83,69 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1462}
     - Class: 114
-      Script: {instanceID: 1502}
+      Script: {instanceID: 1504}
     - Class: 114
-      Script: {instanceID: 1550}
+      Script: {instanceID: 1552}
     - Class: 114
-      Script: {instanceID: 1584}
+      Script: {instanceID: 1586}
     - Class: 114
-      Script: {instanceID: 1614}
+      Script: {instanceID: 1616}
     - Class: 114
-      Script: {instanceID: 1664}
+      Script: {instanceID: 1666}
     - Class: 114
-      Script: {instanceID: 1744}
+      Script: {instanceID: 1746}
     - Class: 114
-      Script: {instanceID: 1838}
+      Script: {instanceID: 1840}
     - Class: 114
-      Script: {instanceID: 2104}
+      Script: {instanceID: 2106}
     - Class: 114
-      Script: {instanceID: 2162}
+      Script: {instanceID: 2164}
     - Class: 114
-      Script: {instanceID: 2334}
+      Script: {instanceID: 2336}
     - Class: 114
-      Script: {instanceID: 2352}
+      Script: {instanceID: 2354}
     - Class: 114
-      Script: {instanceID: 2458}
+      Script: {instanceID: 2460}
     - Class: 114
-      Script: {instanceID: 2518}
+      Script: {instanceID: 2520}
     - Class: 114
-      Script: {instanceID: 2680}
+      Script: {instanceID: 2682}
     - Class: 114
-      Script: {instanceID: 2708}
+      Script: {instanceID: 2710}
     - Class: 114
-      Script: {instanceID: 2836}
+      Script: {instanceID: 2838}
     - Class: 114
-      Script: {instanceID: 2844}
+      Script: {instanceID: 2846}
     - Class: 114
-      Script: {instanceID: 2860}
+      Script: {instanceID: 2862}
     - Class: 114
-      Script: {instanceID: 2924}
+      Script: {instanceID: 2926}
     - Class: 114
-      Script: {instanceID: 2958}
+      Script: {instanceID: 2960}
     - Class: 114
-      Script: {instanceID: 2984}
+      Script: {instanceID: 2986}
     - Class: 114
-      Script: {instanceID: 3094}
+      Script: {instanceID: 3096}
     - Class: 114
-      Script: {instanceID: 3210}
+      Script: {instanceID: 3212}
     - Class: 114
-      Script: {instanceID: 3222}
+      Script: {instanceID: 3224}
     - Class: 114
-      Script: {instanceID: 3292}
+      Script: {instanceID: 3294}
     - Class: 114
-      Script: {instanceID: 3440}
+      Script: {instanceID: 3442}
     - Class: 114
-      Script: {instanceID: 3518}
+      Script: {instanceID: 3520}
     - Class: 114
-      Script: {instanceID: 3592}
+      Script: {instanceID: 3594}
     - Class: 114
-      Script: {instanceID: 3686}
+      Script: {instanceID: 3688}
     - Class: 114
-      Script: {instanceID: 3820}
+      Script: {instanceID: 3822}
     - Class: 114
-      Script: {instanceID: 4090}
+      Script: {instanceID: 4092}
     - Class: 114
-      Script: {instanceID: 4148}
+      Script: {instanceID: 4150}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -259,7 +265,7 @@ ScriptsOnlyBuild:
     className: TMP_FontAsset
   - hash:
       serializedVersion: 2
-      Hash: 5e83f306dfe7b046b1e0830355b0dc0d
+      Hash: 7ce3247472c6862d988a7c673b2b419f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Game
@@ -307,7 +313,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: b7a818ac4169f6294229f9c9ae7be233
+      Hash: 3373a297f8ea0af8ea3375f2d275d2a7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameUI

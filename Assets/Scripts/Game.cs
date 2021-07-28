@@ -30,6 +30,17 @@ public class Game : NetworkBehaviour
     private GameObject gameUIPrefab;
 
     /// <summary>
+    /// The number of seconds between each action point being given out
+    /// </summary>
+    private const float actionPointSeconds = 90;
+
+    [SerializeField]
+    public NetworkVariableFloat actionPointRemainingTime = new NetworkVariableFloat();
+
+    [SerializeField]
+    private bool actionPointTimerRunning = false;
+
+    /// <summary>
     /// Singleton of the game object, ensures only one game instance can be created
     /// </summary>
     public static Game Singleton;
@@ -70,6 +81,9 @@ public class Game : NetworkBehaviour
         // Create the gameUI
         Instantiate(gameUIPrefab).GetComponent<NetworkObject>().Spawn();
 
+        // Start the action point timer
+        resetAndStartActionPointTimer();
+
         gameActive.Value = true;
 
     }
@@ -82,5 +96,81 @@ public class Game : NetworkBehaviour
     public void playerDied()
     {
         playerDiedEvent.Invoke();
+    }
+
+    /// <summary>
+    /// Add a callback to the <see cref="actionPointRemainingTime"/> networkVariable which is called whenever the time changes
+    /// </summary>
+    public void addTimerCallback(NetworkVariableFloat.OnValueChangedDelegate onChanged)
+    {
+        actionPointRemainingTime.OnValueChanged += onChanged;
+    }
+
+    /// <summary>
+    /// Reset and start the action point timer
+    /// </summary>
+    public void resetAndStartActionPointTimer()
+    {
+        if (!IsServer) throw new System.Exception("Client tried to call resetAndStartActionPointTimer");
+        actionPointRemainingTime.Value = actionPointSeconds;
+        actionPointTimerRunning = true;
+    }
+
+    /// <summary>
+    /// Reset and stop the action point timer
+    /// </summary>
+    public void resetAndStopActionPointTimer()
+    {
+        if (!IsServer) throw new System.Exception("Client tried to call resetAndStopActionPointTimer");
+        actionPointRemainingTime.Value = actionPointSeconds;
+        actionPointTimerRunning = false;
+    }
+
+    /// <summary>
+    /// Called when the action point timer has finished
+    /// </summary>
+    public void actionPointTimerDone()
+    {
+        if (!IsServer) throw new System.Exception("Client tried to call actionPointTimerDone");
+        // When the timer is done, reset it and start again and give everyone an action point
+        Player.giveAllActionPoint();
+        resetAndStartActionPointTimer();
+    }
+
+    /// <summary>
+    /// Get the remaining time on the timer as a string
+    /// </summary>
+    /// <returns>minute:string of the remaining time until every player is given an extra action point</returns>
+    public string getTimerValue()
+    {
+        int remaining = Mathf.FloorToInt(actionPointRemainingTime.Value);
+        int minutes = Mathf.FloorToInt(remaining / 60);
+        int seconds = remaining % 60;
+
+        string secondsString = seconds.ToString();
+
+        if (secondsString.Length < 2) secondsString = "0" + secondsString;
+
+        return minutes.ToString() + ":" + secondsString;
+    }
+
+    public void Update()
+    {
+
+        // Only the server needs to control the timer
+        if (IsServer)
+        {
+            if (actionPointTimerRunning)
+            {
+                actionPointRemainingTime.Value -= Time.deltaTime;
+
+                if (actionPointRemainingTime.Value <= 0)
+                {
+                    // Timer is done
+                    actionPointTimerDone();
+                }
+
+            }
+        }
     }
 }
