@@ -180,7 +180,6 @@ public class Board : NetworkBehaviour {
         if (!IsServer) throw new System.AccessViolationException("Client tried to call place tile");
 
         GameObject go =  Instantiate(tilePrefab, new Vector2(x, y), Quaternion.identity, tilePrefabParent);
-        go.GetComponent<NetworkObject>().Spawn();
 
         Tile newTile = go.GetComponent<Tile>();
 
@@ -192,6 +191,8 @@ public class Board : NetworkBehaviour {
         int gridPositionY = (tiles.Count - 1 - gridPositionX)/ boardSizeX.Value;
 
         newTile.setGridPosition(gridPositionX, gridPositionY);
+
+        go.GetComponent<NetworkObject>().Spawn();
     }
 
     /// <summary>
@@ -290,14 +291,21 @@ public class Board : NetworkBehaviour {
         // Only the server can call this function
         if (!IsServer) throw new System.AccessViolationException("Client tried to call createTankAtPosition");
 
-        GameObject go = Instantiate(tankPrefab, new Vector2(), Quaternion.identity, tankPrefabParent);
-        go.GetComponent<NetworkObject>().Spawn();
+        GameObject go = Instantiate(tankPrefab);
 
         Tank newTank = go.GetComponent<Tank>();
 
+        Debug.Log("Set grid position");
         newTank.setGridPosition(x, y);
+        Debug.Log("Done...Set Player");
         newTank.setPlayer(player);
+        Debug.Log("Done...Set Color");
         newTank.setColour(color);
+        Debug.Log("Done...Set Tank");
         player.setTank(newTank);
+        Debug.Log("Done");
+
+        // Spawn the Tank after all the setup has been made
+        go.GetComponent<NetworkObject>().Spawn();
     }
 }

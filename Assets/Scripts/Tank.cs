@@ -34,14 +34,14 @@ public class Tank : NetworkBehaviour
     /// The tile this tank is currently on
     /// </summary>
     [SerializeField]
-    private NetworkVariable<Tile> locationTile = new NetworkVariable<Tile>();
+    private Tile locationTile;
 
     /// <summary>
     /// The player this tank is linked to
     /// </summary>
     /// <remarks>Can only be set once, usually on creation</remarks>
     [SerializeField]
-    private NetworkVariable<Player> player = new NetworkVariable<Player>();
+    private Player player;
 
     /// <summary>
     /// Keeps track of whether <see cref="player"/> has been set
@@ -81,7 +81,7 @@ public class Tank : NetworkBehaviour
     {
         if (playerSet.Value) throw new System.Exception("Tried to set a tank player twice");
         if (!IsServer) throw new System.Exception("Client tried to call setPlayer");
-        this.player.Value = player;
+        this.player = player;
         playerSet.Value = true;
     }
 
@@ -91,7 +91,8 @@ public class Tank : NetworkBehaviour
     /// <returns><see cref="Player"/> who is represented by this tank</returns>
     public Player getPlayer()
     {
-        return player.Value;
+        if (!IsServer) throw new System.Exception("Client tried to call getPlayer");
+        return player;
     }
 
     /// <summary>
@@ -110,18 +111,18 @@ public class Tank : NetworkBehaviour
         if (!IsServer) throw new System.Exception("Client tried to call setGridPosition");
 
         // Get the tile at our new position
-        locationTile.Value = Board.Singleton.getTileAtPosition(x, y);
+        locationTile = Board.Singleton.getTileAtPosition(x, y);
 
-        if (locationTile.Value.isOccupied()) throw new System.Exception("Tried to move a tank to an occupied tile");
+        if (locationTile.isOccupied()) throw new System.Exception("Tried to move a tank to an occupied tile");
 
         // If our current location isn't null set the tank there to null
-        if (locationTile != null) locationTile.Value.removeTank();
+        if (locationTile != null) locationTile.removeTank();
 
         // Set ourselves as the occupying tank in the new tile
-        locationTile.Value.setOccupyingTank(this);
+        locationTile.setOccupyingTank(this);
 
         // Set our physical position
-        transform.position = locationTile.Value.transform.position;
+        transform.position = locationTile.transform.position;
 
         // Trigger the position changed event
         positionChanged.Invoke();
@@ -134,7 +135,8 @@ public class Tank : NetworkBehaviour
     /// <returns>A <see cref="Vector2"/> where <see cref="x"/> is the horizontal position from the left and <see cref="y"/> is the position from the bottom</returns>
     public Vector2 getGridPosition()
     {
-        return locationTile.Value.getGridPosition();
+        if (!IsServer) throw new System.Exception("Client tried to call getGridPosition");
+        return locationTile.getGridPosition();
     }
 
     /// <summary>
@@ -161,7 +163,7 @@ public class Tank : NetworkBehaviour
         if (IsServer)
         {
             // The tile is no longer occupied
-            locationTile.Value.removeTank();
+            locationTile.removeTank();
         }
     }
 }

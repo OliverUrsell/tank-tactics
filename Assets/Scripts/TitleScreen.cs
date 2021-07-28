@@ -107,9 +107,9 @@ public class TitleScreen : NetworkBehaviour
         {
             // Spawn the lobby canvas
             GameObject go = Instantiate(lobbyCanvas.gameObject);
-            go.GetComponent<NetworkObject>().Spawn();
             // Set it active
             go.GetComponent<LobbyCanvas>().isActive.Value = true;
+            go.GetComponent<NetworkObject>().Spawn();
         }
     }
 

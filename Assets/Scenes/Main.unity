@@ -292,7 +292,6 @@ GameObject:
   - component: {fileID: 129875465}
   - component: {fileID: 129875464}
   - component: {fileID: 129875466}
-  - component: {fileID: 129875467}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -351,18 +350,6 @@ MonoBehaviour:
   PrefabHashGenerator: Game
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
---- !u!114 &129875467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129875463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05b2c5b51e43d6e4d85866712133debc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &205488081
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,6 +936,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 685831082}
+  - component: {fileID: 685831083}
   m_Layer: 0
   m_Name: Tanks
   m_TagString: Untagged
@@ -970,6 +958,19 @@ Transform:
   m_Father: {fileID: 435008840}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &685831083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685831081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36627f1c31e9304580ee02452e49c5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 2
 --- !u!1 &775263958
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,6 +1895,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1774179495}
+  - component: {fileID: 1774179496}
   m_Layer: 0
   m_Name: Tiles
   m_TagString: Untagged
@@ -1915,6 +1917,19 @@ Transform:
   m_Father: {fileID: 435008840}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1774179496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774179494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a36627f1c31e9304580ee02452e49c5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
 --- !u!850595691 &1809110154
 LightingSettings:
   m_ObjectHideFlags: 0

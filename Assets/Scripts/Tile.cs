@@ -17,7 +17,7 @@ public class Tile : NetworkBehaviour {
     /// The tank that occupies this square, null if nothing
     /// </summary>
     [SerializeField]
-    private NetworkVariable<Tank> occupyingTank = new NetworkVariable<Tank>();
+    private Tank occupyingTank;
 
     /// <summary>
     /// The grid position this tile is in
@@ -59,8 +59,9 @@ public class Tile : NetworkBehaviour {
     /// <returns><see cref="Tank"/> that occupies this tile</returns>
     public Tank getOccupyingTank()
     {
+        if (!IsServer) throw new System.Exception("Client tried to call getOccupyingTank");
         if (!isOccupied()) throw new System.Exception("Tried to get a tank from a tile that is not occupied");
-        return occupyingTank.Value;
+        return occupyingTank;
     }
 
     /// <summary>
@@ -73,7 +74,7 @@ public class Tile : NetworkBehaviour {
         if (!IsServer) throw new System.Exception("Client tried to call setOccupyingTank");
         if (occupied.Value) throw new System.Exception("Tried to put a tank on a tile that already has a tank at position (" + gridPosition.Value.x + ", " + gridPosition.Value.y + ")." +
             " If you are trying to remove the tank from this square use Tile.removeTank instead");
-        occupyingTank.Value = tank;
+        occupyingTank = tank;
         occupied.Value = true;
     }
 

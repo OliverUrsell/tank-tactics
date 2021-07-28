@@ -5,6 +5,8 @@ ScriptsOnlyBuild:
     - Game
     - GameUI
     - LobbyCanvas
+    - NetworkObjectParent
+    - NetworkObjectWithParent
     - NetworkText
     - PanCameraController
     - Player
@@ -77,65 +79,67 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1502}
     - Class: 114
-      Script: {instanceID: 1610}
+      Script: {instanceID: 1550}
     - Class: 114
-      Script: {instanceID: 1660}
+      Script: {instanceID: 1584}
     - Class: 114
-      Script: {instanceID: 1740}
+      Script: {instanceID: 1614}
     - Class: 114
-      Script: {instanceID: 1834}
+      Script: {instanceID: 1664}
     - Class: 114
-      Script: {instanceID: 2100}
+      Script: {instanceID: 1744}
     - Class: 114
-      Script: {instanceID: 2158}
+      Script: {instanceID: 1838}
     - Class: 114
-      Script: {instanceID: 2346}
+      Script: {instanceID: 2104}
     - Class: 114
-      Script: {instanceID: 2452}
+      Script: {instanceID: 2162}
     - Class: 114
-      Script: {instanceID: 2512}
+      Script: {instanceID: 2334}
     - Class: 114
-      Script: {instanceID: 2674}
+      Script: {instanceID: 2352}
     - Class: 114
-      Script: {instanceID: 2702}
+      Script: {instanceID: 2458}
     - Class: 114
-      Script: {instanceID: 2830}
+      Script: {instanceID: 2518}
     - Class: 114
-      Script: {instanceID: 2838}
+      Script: {instanceID: 2680}
     - Class: 114
-      Script: {instanceID: 2854}
+      Script: {instanceID: 2708}
     - Class: 114
-      Script: {instanceID: 2918}
+      Script: {instanceID: 2836}
     - Class: 114
-      Script: {instanceID: 2952}
+      Script: {instanceID: 2844}
     - Class: 114
-      Script: {instanceID: 2978}
+      Script: {instanceID: 2860}
     - Class: 114
-      Script: {instanceID: 3088}
+      Script: {instanceID: 2924}
     - Class: 114
-      Script: {instanceID: 3204}
+      Script: {instanceID: 2958}
     - Class: 114
-      Script: {instanceID: 3284}
+      Script: {instanceID: 2984}
     - Class: 114
-      Script: {instanceID: 3432}
+      Script: {instanceID: 3094}
     - Class: 114
-      Script: {instanceID: 3510}
+      Script: {instanceID: 3210}
     - Class: 114
-      Script: {instanceID: 3676}
+      Script: {instanceID: 3222}
     - Class: 114
-      Script: {instanceID: 3810}
+      Script: {instanceID: 3292}
     - Class: 114
-      Script: {instanceID: 4136}
+      Script: {instanceID: 3440}
     - Class: 114
-      Script: {instanceID: 17652}
+      Script: {instanceID: 3518}
     - Class: 114
-      Script: {instanceID: 32730}
+      Script: {instanceID: 3592}
     - Class: 114
-      Script: {instanceID: 34256}
+      Script: {instanceID: 3686}
     - Class: 114
-      Script: {instanceID: 50270}
+      Script: {instanceID: 3820}
     - Class: 114
-      Script: {instanceID: 68170}
+      Script: {instanceID: 4090}
+    - Class: 114
+      Script: {instanceID: 4148}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -187,6 +191,18 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_InputField
+  - hash:
+      serializedVersion: 2
+      Hash: 0d8096aaa063b976ff3dfa3dd7ca121d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NetworkObjectWithParent
+  - hash:
+      serializedVersion: 2
+      Hash: ca8c1165d966b0c32cc011c83316a043
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NetworkText
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -249,7 +265,7 @@ ScriptsOnlyBuild:
     className: Game
   - hash:
       serializedVersion: 2
-      Hash: 79ae8386e1aaddd0846cfbd149b84057
+      Hash: c8d80c992094644a1ec1bc2a8de371a0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Tank
@@ -273,7 +289,7 @@ ScriptsOnlyBuild:
     className: PlaymodeTestsController
   - hash:
       serializedVersion: 2
-      Hash: ae01a7717a8fc4a00e92b5f7b23a22a1
+      Hash: ad04100e4544f8be8c81b5ff61ee1b85
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -289,6 +305,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: RawImage
+  - hash:
+      serializedVersion: 2
+      Hash: 270d84c79353f679bfa3c4c07d5708cb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameUI
   - hash:
       serializedVersion: 2
       Hash: a1aa98c78061c6f03a8c124cda576e67
@@ -333,7 +355,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: d7b4ac4586d05e2dc0b1a64a9740fb71
+      Hash: 328eaf05fbc9750b3e1062459349cf1c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Tile
@@ -423,7 +445,7 @@ ScriptsOnlyBuild:
     className: Button
   - hash:
       serializedVersion: 2
-      Hash: 597e5c2f208746a56795bd7904d16d6a
+      Hash: 1347255afe3674766d465848c411a98d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TankDisplay
@@ -469,6 +491,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: VerticalLayoutGroup
+  - hash:
+      serializedVersion: 2
+      Hash: 2ecdbe75f54c8965e9d317f6c9a2e0e3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NetworkObjectParent
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -567,6 +595,12 @@ ScriptsOnlyBuild:
     className: ActivationTrack
   - hash:
       serializedVersion: 2
+      Hash: df451c649b35ba0c9687db39b3fb80b0
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TankInfoCanvas
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -633,6 +667,12 @@ ScriptsOnlyBuild:
     className: TMP_SubMeshUI
   - hash:
       serializedVersion: 2
+      Hash: ee81bed9f04ddc7095a29a410258fd99
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SmallInfoCanvas
+  - hash:
+      serializedVersion: 2
       Hash: e7182e6d337b73771f0d7b32eb22e341
     assemblyName: Unity.Multiplayer.MLAPI.Runtime.dll
     namespaceName: MLAPI
@@ -673,30 +713,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
-  - hash:
-      serializedVersion: 2
-      Hash: dbd68075c2241a7ad41e4fc95cc62de7
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: TankInfoCanvas
-  - hash:
-      serializedVersion: 2
-      Hash: ee81bed9f04ddc7095a29a410258fd99
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: SmallInfoCanvas
-  - hash:
-      serializedVersion: 2
-      Hash: 270d84c79353f679bfa3c4c07d5708cb
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GameUI
-  - hash:
-      serializedVersion: 2
-      Hash: b002d9caf85cc3a529a5f4a829112a79
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: NetworkText
   platform: 5
   scenePathNames:
   - Assets/Scenes/Main.unity

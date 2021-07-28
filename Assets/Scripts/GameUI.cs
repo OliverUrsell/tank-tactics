@@ -42,6 +42,7 @@ public class GameUI : NetworkBehaviour
             // Update the names
             UpdateNames();
         };
+
     }
 
     /// <summary>
@@ -67,38 +68,38 @@ public class GameUI : NetworkBehaviour
             else { deadPlayers.Add(player);  }
         }
 
-        GameObject newGO = Instantiate(verticalNameUIPrefab, playerListContent.transform);
-        newGO.GetComponent<NetworkObject>().Spawn();
+        GameObject newGO = Instantiate(verticalNameUIPrefab);
         NetworkText newText = newGO.GetComponent<NetworkText>();
         newText.text.Value = "Alive\n";
-        newText.uiText.fontSize = 32;
+        newText.fontSize.Value = 32;
+        newGO.GetComponent<NetworkObject>().Spawn();
 
         // Add a user name for every alive player, i.e. every player with a tank
         foreach (Player player in alivePlayers)
         {
-            newGO = Instantiate(verticalNameUIPrefab, playerListContent.transform);
-            newGO.GetComponent<NetworkObject>().Spawn();
+            newGO = Instantiate(verticalNameUIPrefab);
             newText = newGO.GetComponent<NetworkText>();
             newText.text.Value = player.screenName.Value;
-            newText.uiText.color = player.getTank().getColour();
+            newText.color.Value = player.getTank().getColour();
+            newGO.GetComponent<NetworkObject>().Spawn();
         }
 
         if(deadPlayers.Count != 0)
         {
             // Add a header
-            newGO = Instantiate(verticalNameUIPrefab, playerListContent.transform);
-            newGO.GetComponent<NetworkObject>().Spawn();
+            newGO = Instantiate(verticalNameUIPrefab);
             newText = newGO.GetComponent<NetworkText>();
             newText.text.Value = "Dead\n";
-            newText.uiText.fontSize = 32;
+            newText.fontSize.Value = 32;
+            newGO.GetComponent<NetworkObject>().Spawn();
 
             // Add a user name for every dead player, i.e. every player without a tank
             foreach (Player player in deadPlayers)
             {
-                newGO = Instantiate(verticalNameUIPrefab, playerListContent.transform);
-                newGO.GetComponent<NetworkObject>().Spawn();
+                newGO = Instantiate(verticalNameUIPrefab);
                 newText = newGO.GetComponent<NetworkText>();
                 newText.text.Value = player.screenName.Value;
+                newGO.GetComponent<NetworkObject>().Spawn();
             }
         }
 

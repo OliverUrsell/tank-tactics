@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3123323252419257988}
   - component: {fileID: 3123323252419257989}
   - component: {fileID: 2717193823860126897}
+  - component: {fileID: 2819080565944107696}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -45,6 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2388190d78f7eb24ba05f26d9e6b301f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  occupied:
+    m_InternalValue: 0
+  occupyingTank: {fileID: 0}
+  gridPosition:
+    m_InternalValue: {x: -1, y: -1}
 --- !u!114 &2717193823860126897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +68,19 @@ MonoBehaviour:
   PrefabHashGenerator: Tile
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
+--- !u!114 &2819080565944107696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3123323252419257990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee1ff4c5aeba514498cd2806a8c9aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ParentId: 1
 --- !u!1 &3123323252875371075
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,9 +15,9 @@ public class Player : NetworkBehaviour
     /// <summary>
     /// The tank that this player is connected to
     /// </summary>
-    /// <remarks>Can only be set once, usually on creation</remarks>
+    /// <remarks>Can only be set once, usually on creation.</remarks>
     [SerializeField]
-    private NetworkVariable<Tank> tank = new NetworkVariable<Tank>(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly });
+    private Tank tank;
 
     /// <summary>
     /// Keeps track of whether the tank has been set so that the tank isn't set twice
@@ -40,7 +40,7 @@ public class Player : NetworkBehaviour
     {
         if (tankSet.Value) throw new System.Exception("Tried to set a player tank twice");
         if (!IsServer) throw new System.Exception("Client tried to call setTank");
-        this.tank.Value = tank;
+        this.tank = tank;
         tankSet.Value = true;
     }
 
@@ -50,8 +50,9 @@ public class Player : NetworkBehaviour
     /// <returns><see cref="Tank"/> this player is represented by</returns>
     public Tank getTank()
     {
+        if (!IsServer) throw new System.Exception("Client tried to call getTank");
         if (!tankSet.Value) { throw new System.Exception("Tried to access null tank"); }
-        return tank.Value;
+        return tank;
     }
 
     /// <summary>
@@ -113,7 +114,7 @@ public class Player : NetworkBehaviour
         if (IsServer)
         {
             // Destroy the tank
-            if (tankSet.Value) Destroy(tank.Value.gameObject);
+            if (tankSet.Value) Destroy(tank.gameObject);
         }
         
         Game.Singleton.playerDied();

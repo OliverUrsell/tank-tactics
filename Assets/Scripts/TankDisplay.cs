@@ -20,7 +20,7 @@ public class TankDisplay : MonoBehaviour
     /// The UI canvas which is displayed when the user clicks on the tile
     /// </summary>
     [SerializeField]
-    private Canvas infoDisplayCanvas;
+    private GameObject infoDisplayCanvas;
 
     /// <summary>
     /// Keeps track of whether the user's mouse is inside of the tank's collider
@@ -37,7 +37,7 @@ public class TankDisplay : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // When the user clicks show or hide the canvas based on if the user's mouse is in the tank
-            infoDisplayCanvas.gameObject.SetActive(mouseInCollider);
+            infoDisplayCanvas.SetActive(mouseInCollider);
         }
     }
 
