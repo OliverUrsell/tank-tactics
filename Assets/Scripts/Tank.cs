@@ -44,6 +44,12 @@ public class Tank : NetworkBehaviour
     private Player player;
 
     /// <summary>
+    /// The id of the player this tank is linked to, used to allow clients to get player connected to the tank
+    /// </summary>
+    [SerializeField]
+    private NetworkVariableULong playerId = new NetworkVariableULong();
+
+    /// <summary>
     /// Keeps track of whether <see cref="player"/> has been set
     /// </summary>
     [SerializeField]
@@ -67,9 +73,48 @@ public class Tank : NetworkBehaviour
     /// <remarks>Initially set to 1</remarks>
     public NetworkVariableInt range = new NetworkVariableInt(1);
 
+    public void Start()
+    {
+        Debug.Log("Setting player from id: " + playerId.Value.ToString());
+        playerId.OnValueChanged += (oldVal, newVal) =>
+        {
+            player = Player.getPlayerByClientId(newVal);
+            if (IsClient && player.getTank() == null) player.setTank(this);
+        };
+
+        player = Player.getPlayerByClientId(playerId.Value);
+        if (IsClient && player.getTank() == null) player.setTank(this);
+    }
+
     public void Update()
     {
         if (tankColourSet.Value) backgroundRenderer.color = tankColour.Value;
+    }
+
+    /// <summary>
+    /// Get the tank attributed to the player with id
+    /// </summary>
+    /// <param name="player">The <see cref="Player"/> this tank represents</param>
+    /// <returns><see cref="Tank"/> that represents this player, null if the player is not represented</returns>
+    public static Tank getTankByPlayer(Player player)
+    {
+        ulong id = player.OwnerClientId;
+        Tank tank = Player.getPlayerByClientId(id).getTank();
+        if (tank == null)
+        {
+            foreach(Tank t in FindObjectsOfType<Tank>())
+            {
+                if (t.playerId.Value == id) {
+                    Player.getPlayerByClientId(id).setTank(t);
+                    return t;
+                };
+            }
+
+            // If we reach here the player is probably dead, since no tank exists
+            return null;
+        }
+
+        return tank;
     }
 
     /// <summary>
@@ -82,6 +127,7 @@ public class Tank : NetworkBehaviour
         if (playerSet.Value) throw new System.Exception("Tried to set a tank player twice");
         if (!IsServer) throw new System.Exception("Client tried to call setPlayer");
         this.player = player;
+        playerId.Value = player.OwnerClientId;
         playerSet.Value = true;
     }
 

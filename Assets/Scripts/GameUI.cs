@@ -22,8 +22,16 @@ public class GameUI : NetworkBehaviour
     [SerializeField]
     private GameObject playerListContent;
 
+    /// <summary>
+    /// The <see cref="Text"/> which has it's value set to the name of the local player
+    /// </summary>
+    [SerializeField]
+    [Tooltip("The Text which has it's value set to the name of the local player and the local players tank colour")]
+    private Text playerName;
+
     public void Awake()
     {
+
         // Only the server needs to setup the names
         if (!IsServer) return;
 
@@ -37,12 +45,25 @@ public class GameUI : NetworkBehaviour
         NetworkManager.Singleton.OnClientConnectedCallback += (id) =>
         {
             // Add a listener for if the player name changes
-            Player.getPlayerById(id).screenName.OnValueChanged += (OldVal, NewVal) => UpdateNames();
+            Player.getPlayerByClientId(id).screenName.OnValueChanged += (OldVal, NewVal) => UpdateNames();
 
             // Update the names
             UpdateNames();
         };
 
+    }
+
+    public void Start()
+    {
+        Player localPlayer = Player.getLocalPlayer();
+        playerName.text = localPlayer.screenName.Value;
+        Tank playerTank = localPlayer.getTank();
+        if(playerTank != null)
+        {
+            playerName.color = playerTank.getColour();
+            // Reset to RGB(50,50,50) when the player dies
+            localPlayer.playerDied.AddListener(() => { playerName.color = new Color(50, 50, 50); });
+        }
     }
 
     /// <summary>

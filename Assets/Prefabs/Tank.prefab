@@ -95,6 +95,8 @@ MonoBehaviour:
     m_InternalValue: 0
   locationTile: {fileID: 0}
   player: {fileID: 0}
+  playerId:
+    m_InternalValue: 0
   playerSet:
     m_InternalValue: 0
   health:

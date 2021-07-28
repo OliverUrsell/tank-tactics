@@ -5,6 +5,7 @@ using MLAPI.NetworkVariable.Collections;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : NetworkBehaviour
 {
@@ -20,12 +21,6 @@ public class Player : NetworkBehaviour
     private Tank tank;
 
     /// <summary>
-    /// Keeps track of whether the tank has been set so that the tank isn't set twice
-    /// </summary>
-    [SerializeField]
-    private NetworkVariableBool tankSet = new NetworkVariableBool(new NetworkVariableSettings { WritePermission = NetworkVariablePermission.ServerOnly}, false);
-
-    /// <summary>
     /// The UI to display if the user is dead
     /// </summary>
     [SerializeField]
@@ -38,20 +33,16 @@ public class Player : NetworkBehaviour
     /// <remarks>Can only be Can only be called once, normally called when the player is created. Should only be called by the server</remarks>
     public void setTank(Tank tank)
     {
-        if (tankSet.Value) throw new System.Exception("Tried to set a player tank twice");
-        if (!IsServer) throw new System.Exception("Client tried to call setTank");
+        if (this.tank != null) throw new System.Exception("Tried to set a player tank twice");
         this.tank = tank;
-        tankSet.Value = true;
     }
 
     /// <summary>
-    /// Get the tank this player is represented by, throws error if tankSet is false
+    /// Get the tank this player is represented by
     /// </summary>
-    /// <returns><see cref="Tank"/> this player is represented by</returns>
+    /// <returns><see cref="Tank"/> this player is represented by, <see cref="null"/> if there is no tank representing the player</returns>
     public Tank getTank()
     {
-        if (!IsServer) throw new System.Exception("Client tried to call getTank");
-        if (!tankSet.Value) { throw new System.Exception("Tried to access null tank"); }
         return tank;
     }
 
@@ -61,17 +52,28 @@ public class Player : NetworkBehaviour
     /// <returns><see cref="Player"/> object that represents the local client</returns>
     public static Player getLocalPlayer()
     {
-        return getPlayerById(NetworkManager.Singleton.LocalClientId);
+        return getPlayerByClientId(NetworkManager.Singleton.LocalClientId);
     }
 
     /// <summary>
     /// Get the player object which represents the client with the given id
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public static Player getPlayerById(ulong id)
+    /// <param name="id">ulong id of the player to get</param>
+    /// <returns><see cref="Player"/> representing the given id</returns>
+    public static Player getPlayerByClientId(ulong id)
     {
-        return NetworkManager.Singleton.ConnectedClients[id].PlayerObject.GetComponent<Player>();
+        // Can't use this since ConnectedClients is only filled for the server
+        // return NetworkManager.Singleton.ConnectedClients[id].PlayerObject.GetComponent<Player>();
+
+        foreach(Player player in FindObjectsOfType<Player>())
+        {
+            if(player.OwnerClientId == id)
+            {
+                return player;
+            }
+        }
+
+        throw new System.Exception("Tried to get player from id that doesn't exist");
     }
 
     /// <summary>
@@ -95,6 +97,10 @@ public class Player : NetworkBehaviour
             {
                 deadScreen.gameObject.SetActive(true);
             }
+            else
+            {
+                deadScreen.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -104,7 +110,12 @@ public class Player : NetworkBehaviour
     /// <returns><see cref="true"/> if the player is alive <see cref="false"/> otherwise</returns>
     /// <remarks>Before game has started returns true, if game is active this guarantees tank is set </remarks>
     // If the game is active and the tank is not set player is dead, otherwise player is alive
-    public bool isAlive() => !(Game.Singleton.gameActive.Value && !tankSet.Value);
+    public bool isAlive() => !(Game.Singleton.gameActive.Value && tank == null);
+
+    /// <summary>
+    /// Invoked when the player dies
+    /// </summary>
+    public UnityEvent playerDied;
 
     /// <summary>
     /// Called when the player dies
@@ -114,10 +125,12 @@ public class Player : NetworkBehaviour
         if (IsServer)
         {
             // Destroy the tank
-            if (tankSet.Value) Destroy(tank.gameObject);
+            if (tank != null) Destroy(tank.gameObject);
         }
         
         Game.Singleton.playerDied();
+
+        playerDied.Invoke();
     }
 
     public void OnDestroy()

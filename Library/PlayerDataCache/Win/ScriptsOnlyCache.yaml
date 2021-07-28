@@ -265,7 +265,7 @@ ScriptsOnlyBuild:
     className: Game
   - hash:
       serializedVersion: 2
-      Hash: c8d80c992094644a1ec1bc2a8de371a0
+      Hash: cc0b0819d0480e6bf1917c417aaef55f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Tank
@@ -289,7 +289,7 @@ ScriptsOnlyBuild:
     className: PlaymodeTestsController
   - hash:
       serializedVersion: 2
-      Hash: ad04100e4544f8be8c81b5ff61ee1b85
+      Hash: 0b94f69ce258779b6907b51b8a0d4463
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -307,7 +307,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: 270d84c79353f679bfa3c4c07d5708cb
+      Hash: 79bdc17f10c8282f10b8abb64c51bbef
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameUI
