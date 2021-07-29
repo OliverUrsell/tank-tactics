@@ -73,6 +73,23 @@ public class Tank : NetworkBehaviour
     /// <remarks>Initially set to 1</remarks>
     public NetworkVariableInt range = new NetworkVariableInt(1);
 
+    /// <summary>
+    /// Particle system which is played when the tank gains action points
+    /// </summary>
+    [SerializeField]
+    public ParticleSystem actionPointParticles;
+
+    /// <summary>
+    /// Particle system which is played when the tank gains range
+    /// </summary>
+    [SerializeField]
+    public ParticleSystem rangeParticles;
+
+    /// <summary>
+    /// Audio which is played whenever the tank gains range
+    /// </summary>
+    public AudioSource upgradeSound;
+
     public void Start()
     {
         Debug.Log("Setting player from id: " + playerId.Value.ToString());
@@ -84,6 +101,27 @@ public class Tank : NetworkBehaviour
 
         player = Player.getPlayerByClientId(playerId.Value);
         if (IsClient && player.getTank() == null) player.setTank(this);
+
+        range.OnValueChanged += (oldVal, newVal) =>
+        {
+            if (newVal > oldVal)
+            {
+                // Whenever the range value increases play the particle system
+                rangeParticles.Play();
+
+                // And play the music
+                upgradeSound.Play();
+            }
+        };
+
+        actionPoints.OnValueChanged += (oldVal, newVal) =>
+        {
+            if (newVal > oldVal)
+            {
+                // Whenever the actionPoints value increases play the particle system
+                actionPointParticles.Play();
+            }
+        };
     }
 
     public void Update()

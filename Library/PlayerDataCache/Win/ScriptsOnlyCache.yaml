@@ -25,6 +25,9 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.SceneViewOpenTilePaletteHelper
     - UnityEditor.Tilemaps.TileDragAndDropManager
     - UnityEditor.Tilemaps.TilemapPrefabStageHelper
+    Unity.Multiplayer.MLAPI.Editor.dll:
+    - UnityEditor.NetworkBehaviourEditor
+    - UnityEditor.NetworkObjectEditor
     Unity.Multiplayer.MLAPI.Prototyping.dll:
     - MLAPI.Prototyping.NetworkTransform
     Unity.Multiplayer.MLAPI.Runtime.dll:
@@ -65,11 +68,17 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 28
       Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
     - Class: 81
+      Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
@@ -142,7 +151,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 4148}
     - Class: 114
-      Script: {instanceID: 98672}
+      Script: {instanceID: 4454}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -150,6 +159,10 @@ ScriptsOnlyBuild:
     - Class: 157
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 198
+      Script: {instanceID: 0}
+    - Class: 199
       Script: {instanceID: 0}
     - Class: 212
       Script: {instanceID: 0}
@@ -262,13 +275,13 @@ ScriptsOnlyBuild:
     className: TMP_FontAsset
   - hash:
       serializedVersion: 2
-      Hash: de134223f0477e0d1acf058a4993f75f
+      Hash: 58fcff4085afdf48ace4112fd9daffb9
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Game
   - hash:
       serializedVersion: 2
-      Hash: cc0b0819d0480e6bf1917c417aaef55f
+      Hash: 17cabe4bba20364ceab7d4393d08fbb4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Tank
@@ -694,6 +707,12 @@ ScriptsOnlyBuild:
     className: TMP_ScrollbarEventHandler
   - hash:
       serializedVersion: 2
+      Hash: 07ebc51043999d3ac7a4a36b1fa8f089
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameInfo
+  - hash:
+      serializedVersion: 2
       Hash: 8220b46879dc5e37db1b940c938f5744
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -716,12 +735,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: TouchInputModule
-  - hash:
-      serializedVersion: 2
-      Hash: 07ebc51043999d3ac7a4a36b1fa8f089
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GameInfo
   platform: 5
   scenePathNames:
   - Assets/Scenes/Main.unity

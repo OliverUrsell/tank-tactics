@@ -41,6 +41,8 @@ public class Game : NetworkBehaviour
     [SerializeField]
     private bool actionPointTimerRunning = false;
 
+    public AudioSource menuMusic;
+
     /// <summary>
     /// Singleton of the game object, ensures only one game instance can be created
     /// </summary>
@@ -58,11 +60,33 @@ public class Game : NetworkBehaviour
         // Add a listener for when the game starts
         gameActive.OnValueChanged += (oldVal, newVal) =>
         {
+            if (newVal)
+            {
+                // If the game has just started
+
+                // Perform local changes when the game starts
+
+                // Enable camera controls
+                gameCamera.GetComponent<PanCameraController>().enabled = true;
+
+                // Disable menu music track
+                menuMusic.Stop();
+            }
+        };
+
+        // Initialise game Active
+        if (gameActive.Value)
+        {
+            // If the game has just started
+
             // Perform local changes when the game starts
 
             // Enable camera controls
             gameCamera.GetComponent<PanCameraController>().enabled = true;
-        };
+
+            // Disable music track
+            menuMusic.Stop();
+        }
     }
 
     /// <summary>

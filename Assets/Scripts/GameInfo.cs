@@ -50,6 +50,7 @@ public class GameInfo : NetworkBehaviour
         NetworkText newText = newGO.GetComponent<NetworkText>();
         newText.text.Value = text;
         newText.color.Value = colour;
+        // Rotate 180 to allow for adding to the bottom
         newGO.transform.Rotate(new Vector3(0, 0, 180));
         newGO.GetComponent<NetworkObject>().Spawn();
     }
