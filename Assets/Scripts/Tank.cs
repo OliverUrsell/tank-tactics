@@ -180,7 +180,6 @@ public class Tank : NetworkBehaviour
     /// <returns><see cref="Player"/> who is represented by this tank</returns>
     public Player getPlayer()
     {
-        if (!IsServer) throw new System.Exception("Client tried to call getPlayer");
         return player;
     }
 
@@ -278,6 +277,31 @@ public class Tank : NetworkBehaviour
     /// </summary>
     /// <returns><see cref="Color"/> representing the colour of the tank</returns>
     public Color getColour() => tankColour.Value;
+
+    /// <summary>
+    /// Returns true if this tank is in range of the local player
+    /// </summary>
+    /// <returns>true if tank is in range, false otherwise. Error if called on local players tank, false if local player is dead</returns>
+    public bool inRange()
+    {
+        if (getPlayer().IsLocalPlayer) { throw new System.Exception("Called inRange on local player's tank"); }
+
+        Player localPlayer = Player.getLocalPlayer();
+
+        // Return false if local player isn't alive
+        if (!localPlayer.isAlive()) { return false; }
+
+        Tank localPlayerTank = localPlayer.getTank();
+
+        Vector2 localPlayerPosition = localPlayerTank.gridPosition.Value;
+
+        Vector2 distanceFromLocalPlayer = localPlayerPosition - gridPosition.Value;
+
+        // Return true if manhatten distance from local player is <= to their range
+        return Mathf.Abs(distanceFromLocalPlayer.x) <= localPlayerTank.range.Value
+            && Mathf.Abs(distanceFromLocalPlayer.y) <= localPlayerTank.range.Value;
+
+    }
 
     public void OnDestroy()
     {

@@ -119,9 +119,18 @@ public class Tile : NetworkBehaviour {
     {
         foreach(Tile tile in FindObjectsOfType<Tile>())
         {
-            tile.onClick.RemoveAllListeners();
-            tile.background.color = tile.defaultColor;
+            tile.clearClickingSingle();
         }
+    }
+
+    /// <summary>
+    /// Removes any user functionality from clicking, i.e moving / attacking on this specific tile
+    /// </summary>
+    /// <remarks>Called after the user makes a move / changes the tile clicking</remarks>
+    private void clearClickingSingle()
+    {
+        onClick.RemoveAllListeners();
+        background.color = defaultColor;
     }
 
     /// <summary>
@@ -130,7 +139,7 @@ public class Tile : NetworkBehaviour {
     private void prepMove()
     {
         // If a tank occupies this tile make sure it is clear and do nothing
-        if (isOccupied()) { clearClicking(); return; }
+        if (isOccupied()) { clearClickingSingle(); return; }
         background.color = moveColour;
 
         // Move the player on click
