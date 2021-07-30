@@ -71,6 +71,13 @@ public class GameUI : NetworkBehaviour
     [Tooltip("Button which is pressed when the user wants to upgrade their tanks range")]
     private Button upgradeRamgeButton;
 
+    /// <summary>
+    /// <see cref="Button"/> which is pressed when the user wants to move their tank
+    /// </summary>
+    [SerializeField]
+    [Tooltip("Button which is pressed when the user wants to move their tank")]
+    private Button moveButton;
+
     public void Awake()
     {
 
@@ -139,6 +146,7 @@ public class GameUI : NetworkBehaviour
 
         // When the upgradeRange button is pressed perform upgrade range on the local player
         upgradeRamgeButton.onClick.AddListener(() => { Player.upgradeRange(); });
+        moveButton.onClick.AddListener(() => { Player.movePlayerPrep(); });
     }
 
     /// <summary>
@@ -148,8 +156,6 @@ public class GameUI : NetworkBehaviour
     private void UpdateNames()
     {
         if (!IsServer) throw new System.Exception("Client tried to call UpdateNames");
-
-        Debug.Log("Updating Names...");
 
         // Destroy every child of content
         for (int i = 0; i < playerListContent.transform.childCount; i++)

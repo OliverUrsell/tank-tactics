@@ -158,11 +158,21 @@ public class Player : NetworkBehaviour
     }
 
     /// <summary>
+    /// Called by the client before a move is made
+    /// </summary>
+    private static void beforeMove()
+    {
+        // Clear every clickable tile
+        Tile.clearClicking();
+    }
+
+    /// <summary>
     /// Performs upgrade range on the local player
     /// </summary>
     public static void upgradeRange()
     {
-        Player.getLocalPlayer().upgradeRangeServerRpc();
+        beforeMove();
+        getLocalPlayer().upgradeRangeServerRpc();
     }
 
     /// <summary>
@@ -186,6 +196,47 @@ public class Player : NetworkBehaviour
         getTank().range.Value++;
 
         GameInfo.Singleton.printToGameInfo(screenName.Value + " upgraded their range to " + getTank().range.Value.ToString(), getTank().getColour());
+
+    }
+
+    /// <summary>
+    /// Preps the tiles around the local player so the player can click on them to move
+    /// </summary>
+    public static void movePlayerPrep()
+    {
+        Player localPlayer = getLocalPlayer();
+
+        // Check the player is alive
+        if (!localPlayer.isAlive()) return;
+
+        // Check the player has enough action points
+        if (localPlayer.getTank().actionPoints.Value <= 0) return;
+
+        beforeMove();
+        Vector2 position = localPlayer.getTank().gridPosition.Value;
+        Board.Singleton.getTileAtPositionClient((int)position.x, (int)position.y).moveAround();
+    }
+
+    /// <summary>
+    /// Get the server to move the player
+    /// </summary>
+    [ServerRpc]
+    public void movePlayerServerRpc(int x, int y)
+    {
+        // Guaranteed to be the server
+
+        // Move the tank
+        getTank().setGridPosition(x, y);
+
+        // Subtract an action point
+        getTank().actionPoints.Value--;
+
+        // Print the move to game info
+        GameInfo.Singleton.printToGameInfo(
+            screenName.Value + " moved to (" + 
+            (x+1).ToString() + "," + (y+1).ToString() + ")",
+            getTank().getColour()
+        );
 
     }
 

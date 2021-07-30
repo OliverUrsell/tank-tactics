@@ -37,6 +37,11 @@ public class Tank : NetworkBehaviour
     private Tile locationTile;
 
     /// <summary>
+    /// Store the grid location for the client to access
+    /// </summary>
+    public NetworkVariableVector2 gridPosition = new NetworkVariableVector2();
+
+    /// <summary>
     /// The player this tank is linked to
     /// </summary>
     /// <remarks>Can only be set once, usually on creation</remarks>
@@ -195,12 +200,18 @@ public class Tank : NetworkBehaviour
         if (!IsServer) throw new System.Exception("Client tried to call setGridPosition");
 
         // Get the tile at our new position
-        locationTile = Board.Singleton.getTileAtPosition(x, y);
+        Tile newLocationTile = Board.Singleton.getTileAtPosition(x, y);
 
-        if (locationTile.isOccupied()) throw new System.Exception("Tried to move a tank to an occupied tile");
+        if (newLocationTile.isOccupied()) throw new System.Exception("Tried to move a tank to an occupied tile");
 
         // If our current location isn't null set the tank there to null
         if (locationTile != null) locationTile.removeTank();
+
+        // Set our tile to the new tile
+        locationTile = newLocationTile;
+
+        // Update the gridPosition attribute for the client
+        gridPosition.Value = new Vector2(x, y);
 
         // Set ourselves as the occupying tank in the new tile
         locationTile.setOccupyingTank(this);
@@ -211,6 +222,32 @@ public class Tank : NetworkBehaviour
         // Trigger the position changed event
         positionChanged.Invoke();
 
+        //setGridPositionClientRpc(x, y);
+
+    }
+
+    /// <summary>
+    /// Set the grid position for the client
+    /// </summary>
+    /// <remarks>Called by <see cref="setGridPosition(int, int)"/></remarks>
+    [ClientRpc]
+    private void setGridPositionClientRpc(int x, int y)
+    {
+        // Guaranteed to be the client
+
+        Debug.Log("Here");
+
+        // Get the tile at our new position
+        Tile newLocationTile = Board.Singleton.getTileAtPosition(x, y);
+
+        // If our current location isn't null set the tank there to null
+        if (locationTile != null) locationTile.removeTank();
+
+        // Set our tile to the new tile
+        locationTile = newLocationTile;
+
+        // Set ourselves as the occupying tank in the new tile
+        locationTile.setOccupyingTank(this);
     }
 
     /// <summary>

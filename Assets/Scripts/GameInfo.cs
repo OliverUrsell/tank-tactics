@@ -42,8 +42,6 @@ public class GameInfo : NetworkBehaviour
     public void printToGameInfo(string text, Color colour)
     {
 
-        Debug.Log("Printing");
-
         if (!IsServer) throw new System.Exception("Client tried to call printToGameInfo");
 
         GameObject newGO = Instantiate(verticalGameInfoUIPrefab.gameObject);

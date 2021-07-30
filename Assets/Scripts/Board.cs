@@ -203,7 +203,20 @@ public class Board : NetworkBehaviour {
     /// <returns><see cref="Tile"/> representing the tile at <paramref name="x"/>, <paramref name="y"/> from the bottom left</returns>
     public Tile getTileAtPosition(int x, int y)
     {
+        if (!IsServer) throw new System.Exception("Client tried to call getTileAtPosition, should call getTileAtPositionClient instead");
         return tiles[x + y * boardSizeX.Value];
+    }
+
+    /// <summary>
+    /// Get the <see cref="Tile"/> at a given position in the board from the bottom left as the client by using the children of the board
+    /// </summary>
+    /// <param name="x">The horizontal position to find from the left</param>
+    /// <param name="y">The vertical position to find from the bottom</param>
+    /// <returns><see cref="Tile"/> representing the tile at <paramref name="x"/>, <paramref name="y"/> from the bottom left</returns>
+    /// <remarks>TODO: Pretty Sketchy</remarks>
+    public Tile getTileAtPositionClient(int x, int y)
+    {
+        return transform.GetChild(0).GetChild(x + y * boardSizeX.Value).GetComponent<Tile>();
     }
 
     /// <summary>
@@ -295,15 +308,10 @@ public class Board : NetworkBehaviour {
 
         Tank newTank = go.GetComponent<Tank>();
 
-        Debug.Log("Set grid position");
         newTank.setGridPosition(x, y);
-        Debug.Log("Done...Set Player");
         newTank.setPlayer(player);
-        Debug.Log("Done...Set Color");
         newTank.setColour(color);
-        Debug.Log("Done...Set Tank");
         player.setTank(newTank);
-        Debug.Log("Done");
 
         // Spawn the Tank after all the setup has been made
         go.GetComponent<NetworkObject>().Spawn();

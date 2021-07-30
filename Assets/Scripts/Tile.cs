@@ -3,6 +3,7 @@ using MLAPI.NetworkVariable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(NetworkObject))]
 public class Tile : NetworkBehaviour {
@@ -20,10 +21,33 @@ public class Tile : NetworkBehaviour {
     private Tank occupyingTank;
 
     /// <summary>
+    /// The tile background, used to change the colour
+    /// </summary>
+    [SerializeField]
+    private SpriteRenderer background;
+
+    /// <summary>
     /// The grid position this tile is in
     /// </summary>
     [SerializeField]
     private NetworkVariableVector2 gridPosition = new NetworkVariableVector2(new Vector2(-1, -1));
+
+    /// <summary>
+    /// Called when the tile is clicked 
+    /// </summary>
+    public UnityEvent onClick;
+
+    /// <summary>
+    /// The default tile colour
+    /// </summary>
+    /// <remarks>Default is white</remarks>
+    private Color defaultColor = new Color(255, 255, 255);
+
+    /// <summary>
+    /// The tile colour to indicate you can click on the tile to move
+    /// </summary>
+    /// <remarks>Default is orange</remarks>
+    private Color moveColour = new Color(255, 165, 0);
 
     /// <summary>
     /// Get the grid position of the tile
@@ -85,5 +109,61 @@ public class Tile : NetworkBehaviour {
     public void removeTank() {
         if (!IsServer) throw new System.Exception("Client tried to call removeTank");
         occupied.Value = false;
+    }
+
+    /// <summary>
+    /// Removes any user functionality from clicking, i.e moving / attacking
+    /// </summary>
+    /// <remarks>Called after the user makes a move / changes the tile clicking</remarks>
+    public static void clearClicking()
+    {
+        foreach(Tile tile in FindObjectsOfType<Tile>())
+        {
+            tile.onClick.RemoveAllListeners();
+            tile.background.color = tile.defaultColor;
+        }
+    }
+
+    /// <summary>
+    /// Setup this Tile so it can be clicked to move onto it
+    /// </summary>
+    private void prepMove()
+    {
+        // If a tank occupies this tile make sure it is clear and do nothing
+        if (isOccupied()) { clearClicking(); return; }
+        background.color = moveColour;
+
+        // Move the player on click
+        onClick.AddListener(() => {
+            clearClicking();
+            Vector2 newPosition = getGridPosition();
+            Player.getLocalPlayer().movePlayerServerRpc((int)newPosition.x, (int)newPosition.y);
+        });
+    }
+
+    /// <summary>
+    ///  Prep all the tiles around this tile so the user can click on them to move
+    /// </summary>
+    public void moveAround()
+    {
+        Vector2 position = getGridPosition();
+        for(float x=position.x - 1; x <= position.x + 1; x++)
+            for (float y = position.y - 1; y <= position.y + 1; y++)
+            {
+                // Ignore this tile
+                if (position.x == x && position.y == y) continue;
+
+                (int boardX, int boardY) = Board.Singleton.getBoardSize();
+
+                // Ignore tiles that are out of bounds
+                if (x < 0 || y < 0 || x >= boardX || y >= boardY) continue;
+
+                Board.Singleton.getTileAtPositionClient((int) x, (int) y).prepMove();
+            }
+    }
+
+    public void OnMouseDown()
+    {
+        onClick.Invoke();
     }
 }
